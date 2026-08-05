@@ -1,0 +1,25 @@
+{
+  "name": "ancom-project",
+  "version": "1.0.0",
+  "private": true,
+  "description": "DỰ ÁN: ĂN CƠM (Eat Rice) - Website toàn cầu: Hôm nay bạn đã ăn cơm chưa?",
+  "scripts": {
+    "install:all": "npm install --prefix client && npm install --prefix server",
+    "dev:client": "npm run dev --prefix client",
+    "dev:server": "npm run dev --prefix server",
+    "build:client": "npm run build --prefix client",
+    "build:server": "npm run build --prefix server",
+    "build": "npm run build:client && npm run build:server"
+  },
+  "keywords": [
+    "eat-rice",
+    "an-com",
+    "react",
+    "express",
+    "firebase",
+    "tailwindcss",
+    "i18n"
+  ],
+  "author": "Eat Rice Global Team",
+  "license": "MIT"
+}

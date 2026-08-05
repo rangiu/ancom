@@ -1,0 +1,60 @@
+{
+  "site": {
+    "title": "🍚 Hôm nay bạn đã ăn cơm chưa? | Dự án Ăn Cơm",
+    "description": "Cùng hàng triệu người khắp nơi trả lời câu hỏi quen thuộc: Hôm nay bạn đã ăn cơm chưa? Thống kê thời gian thực toàn cầu."
+  },
+  "header": {
+    "brand": "Ăn Cơm",
+    "tagline": "Câu hỏi quốc dân"
+  },
+  "questionCard": {
+    "badge": "Điểm danh mỗi ngày",
+    "title": "Hôm nay bạn đã ăn cơm chưa?",
+    "subtitle": "Chọn câu trả lời của bạn bên dưới. Mỗi thiết bị chỉ được bình chọn một lần.",
+    "btnAte": "Đã ăn cơm",
+    "btnNotYet": "Chưa ăn",
+    "thankYou": "Cảm ơn bạn đã phản hồi!",
+    "alreadyVotedTag": "Bạn đã hoàn thành bình chọn hôm nay",
+    "errorGeneric": "Không thể bình chọn lúc này. Vui lòng thử lại.",
+    "errorSpam": "Bạn đã bình chọn trên thiết bị này rồi."
+  },
+  "stats": {
+    "title": "Thống kê thời gian thực hôm nay",
+    "live": "TRỰC TIẾP",
+    "totalVotes": "Tổng lượt bình chọn",
+    "ateCount": "Đã ăn cơm",
+    "notAteCount": "Chưa ăn",
+    "percentageAte": "Tỷ lệ đã ăn cơm",
+    "ratioLabel": "số người bình chọn đã ăn cơm hôm nay",
+    "updating": "Cập nhật liên tục"
+  },
+  "adsense": {
+    "sponsored": "Quảng cáo",
+    "placeholder": "Vị trí dành cho Google AdSense"
+  },
+  "legal": {
+    "privacyPolicy": "Chính sách bảo mật",
+    "termsOfService": "Điều khoản sử dụng",
+    "close": "Đóng",
+    "privacy": {
+      "title": "Chính sách bảo mật",
+      "lastUpdated": "Cập nhật gần nhất: Tháng 8/2026",
+      "p1": "Quyền riêng tư của bạn là ưu tiên hàng đầu của chúng tôi. Website ('Ăn Cơm / Eat Rice') cam kết bảo vệ dữ liệu cá nhân tuân thủ đầy đủ chính sách của Google AdSense và quy định bảo mật quốc tế.",
+      "p2": "Chúng tôi không thu thập thông tin nhận dạng cá nhân (PII) như tên, email hay vị trí chính xác. Chúng tôi chỉ ghi nhận lựa chọn bình chọn ẩn danh, mã băm cookie và LocalStorage để chống bình chọn lặp lại.",
+      "p3": "Các đối tác thứ ba, bao gồm Google AdSense, có thể sử dụng cookie để hiển thị quảng cáo dựa trên các lượt truy cập trước đó của bạn.",
+      "p4": "Bạn có thể tắt quảng cáo cá nhân hóa bằng cách truy cập Cài đặt quảng cáo Google (https://www.google.com/settings/ads)."
+    },
+    "terms": {
+      "title": "Điều khoản sử dụng",
+      "lastUpdated": "Cập nhật gần nhất: Tháng 8/2026",
+      "p1": "Bằng việc sử dụng website Ăn Cơm, bạn đồng ý với các điều khoản này. Nền tảng được tạo ra hoàn toàn vì mục đích kết nối và giải trí tích cực.",
+      "p2": "Người dùng cam kết không sử dụng công cụ tự động, bot hay thủ thuật can thiệp để thao túng bộ đếm bình chọn.",
+      "p3": "Chúng tôi có quyền đặt lại bộ đếm hoặc chặn lưu lượng bất thường để bảo vệ tính toàn vẹn của hệ thống.",
+      "p4": "Dịch vụ được cung cấp nguyên trạng mà không có bất kỳ bảo đảm nào."
+    }
+  },
+  "footer": {
+    "copyright": "© 2026 Dự án Ăn Cơm. Được xây dựng với React, Express & Firebase.",
+    "rights": "Bảo lưu mọi quyền."
+  }
+}

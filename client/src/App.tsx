@@ -1,0 +1,122 @@
+import React, { useEffect, useState } from 'react';
+import { HelmetProvider } from 'react-helmet-async';
+import './lib/i18n';
+import { Header } from './components/Header';
+import { QuestionCard } from './components/QuestionCard';
+import { AdBanner } from './components/AdBanner';
+import { Footer } from './components/Footer';
+import { LegalModal } from './components/LegalModal';
+import { MetaHead } from './components/MetaHead';
+import { VoteStats, VoteChoice } from './types';
+import { fetchVoteStats } from './lib/api';
+import { getStoredVoteState } from './lib/storage';
+
+export const App: React.FC = () => {
+  // Dark mode state with system preference auto-detection
+  const [darkMode, setDarkMode] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('ancom_theme');
+      if (saved) return saved === 'dark';
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    return false;
+  });
+
+  // Sync dark mode class to html element
+  useEffect(() => {
+    const root = document.documentElement;
+    if (darkMode) {
+      root.classList.add('dark');
+      localStorage.setItem('ancom_theme', 'dark');
+    } else {
+      root.classList.remove('dark');
+      localStorage.setItem('ancom_theme', 'light');
+    }
+  }, [darkMode]);
+
+  // Vote state from storage
+  const [userVote, setUserVote] = useState(() => getStoredVoteState());
+
+  // Statistics state
+  const [stats, setStats] = useState<VoteStats>({
+    ateCount: 1248,
+    notAteCount: 312,
+    totalVotes: 1560,
+    percentageAte: 80.0,
+  });
+
+  // Legal Modal State
+  const [modalType, setModalType] = useState<'privacy' | 'terms' | null>(null);
+
+  // Load initial stats & poll periodically every 5 seconds for live realtime updates
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadStats = async () => {
+      try {
+        const freshStats = await fetchVoteStats();
+        if (isMounted) {
+          setStats(freshStats);
+        }
+      } catch (err) {
+        console.error('Error fetching live stats:', err);
+      }
+    };
+
+    loadStats();
+    const interval = setInterval(loadStats, 5000);
+
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
+  }, []);
+
+  const handleVoteSuccess = (newStats: VoteStats, choice: VoteChoice) => {
+    setStats(newStats);
+    setUserVote({
+      hasVoted: true,
+      choice,
+      votedAt: new Date().toISOString(),
+    });
+  };
+
+  return (
+    <HelmetProvider>
+      <MetaHead />
+      <div className="min-h-screen flex flex-col bg-apple-bg dark:bg-apple-darkBg text-apple-text dark:text-apple-darkText transition-colors duration-300">
+        {/* Navigation Header */}
+        <Header darkMode={darkMode} setDarkMode={setDarkMode} />
+
+        {/* Main Content Area */}
+        <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-6 flex flex-col justify-center items-center">
+          {/* Top AdSense Banner */}
+          <AdBanner position="top" slotId="1000000001" />
+
+          {/* Central Question & Statistics Card */}
+          <QuestionCard
+            hasVoted={userVote.hasVoted}
+            userChoice={userVote.choice}
+            stats={stats}
+            onVoteSuccess={handleVoteSuccess}
+          />
+
+          {/* Bottom AdSense Banner */}
+          <AdBanner position="bottom" slotId="1000000002" />
+        </main>
+
+        {/* Footer */}
+        <Footer onOpenLegal={(type) => setModalType(type)} />
+
+        {/* Legal Policy Modals */}
+        <LegalModal
+          isOpen={Boolean(modalType)}
+          type={modalType}
+          onClose={() => setModalType(null)}
+        />
+      </div>
+    </HelmetProvider>
+  );
+};
+
+export default App;

@@ -1,0 +1,60 @@
+{
+  "site": {
+    "title": "🍚 Have you eaten rice today? | Eat Rice Global Community",
+    "description": "Join millions of people worldwide answering the daily question: Have you eaten rice today? Real-time global statistics and voting."
+  },
+  "header": {
+    "brand": "Eat Rice",
+    "tagline": "Global Daily Question"
+  },
+  "questionCard": {
+    "badge": "Daily Rice Check-in",
+    "title": "Have you eaten rice today?",
+    "subtitle": "Cast your vote below. Each device can vote once per day.",
+    "btnAte": "I Ate Rice",
+    "btnNotYet": "Not Yet",
+    "thankYou": "Thank you for your response!",
+    "alreadyVotedTag": "You have already voted today",
+    "errorGeneric": "Unable to submit vote right now. Please try again.",
+    "errorSpam": "You have already voted from this device today."
+  },
+  "stats": {
+    "title": "Global Statistics Today",
+    "live": "LIVE REAL-TIME",
+    "totalVotes": "Total Votes",
+    "ateCount": "Ate Rice",
+    "notAteCount": "Haven't Eaten",
+    "percentageAte": "Rice Eaters Ratio",
+    "ratioLabel": "of voters have eaten rice today",
+    "updating": "Live updates active"
+  },
+  "adsense": {
+    "sponsored": "Advertisement",
+    "placeholder": "Google AdSense Reserved Space"
+  },
+  "legal": {
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "close": "Close",
+    "privacy": {
+      "title": "Privacy Policy",
+      "lastUpdated": "Last updated: August 2026",
+      "p1": "Your privacy is extremely important to us. This website ('Eat Rice / Ăn Cơm') is committed to protecting your personal data in full compliance with Google AdSense and global privacy guidelines.",
+      "p2": "We do not collect personal identifiable information (PII) such as your name, email, or exact location. We only process anonymous voting choices, hashed browser cookies, and LocalStorage tokens strictly for anti-spam verification.",
+      "p3": "Third-party vendors, including Google AdSense, may use cookies to serve ads based on your prior visits to our website or other websites on the Internet.",
+      "p4": "You can opt out of personalized advertising by visiting Google Ads Settings (https://www.google.com/settings/ads)."
+    },
+    "terms": {
+      "title": "Terms of Service",
+      "lastUpdated": "Last updated: August 2026",
+      "p1": "By using the Eat Rice website, you agree to these simple terms. This platform is designed solely for friendly global daily check-ins.",
+      "p2": "Users agree not to attempt automated spamming, bot attacks, or manipulating the voting counter.",
+      "p3": "We reserve the right to reset counters or block malicious traffic to preserve system integrity.",
+      "p4": "The service is provided 'as is' without warranties of any kind."
+    }
+  },
+  "footer": {
+    "copyright": "© 2026 Eat Rice Project. Built with love, React, Express & Firebase.",
+    "rights": "All rights reserved."
+  }
+}
