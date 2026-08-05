@@ -4,12 +4,12 @@
   "private": true,
   "description": "DỰ ÁN: ĂN CƠM (Eat Rice) - Website toàn cầu: Hôm nay bạn đã ăn cơm chưa?",
   "scripts": {
-    "install:all": "npm install --prefix client && npm install --prefix server",
-    "dev:client": "npm run dev --prefix client",
-    "dev:server": "npm run dev --prefix server",
-    "build:client": "npm run build --prefix client",
-    "build:server": "npm run build --prefix server",
-    "build": "npm run build:client && npm run build:server"
+    "install:all": "npm install --prefix frontend && npm install --prefix backend",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "dev:backend": "npm run dev --prefix backend",
+    "build:frontend": "npm run build --prefix frontend",
+    "build:backend": "npm run build --prefix backend",
+    "build": "npm run build:frontend && npm run build:backend"
   },
   "keywords": [
     "eat-rice",

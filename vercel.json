@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "client/package.json",
+      "src": "frontend/package.json",
       "use": "@vercel/static-build",
       "config": { "distDir": "dist" }
     }
@@ -10,15 +10,15 @@
   "routes": [
     {
       "src": "/robots.txt",
-      "dest": "client/robots.txt"
+      "dest": "frontend/robots.txt"
     },
     {
       "src": "/sitemap.xml",
-      "dest": "client/sitemap.xml"
+      "dest": "frontend/sitemap.xml"
     },
     {
       "src": "/(.*)",
-      "dest": "client/$1"
+      "dest": "frontend/$1"
     }
   ]
 }
