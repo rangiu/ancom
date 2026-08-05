@@ -47,8 +47,9 @@ app.get('/health', (_req: Request, res: Response) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// API Routes
+// API Routes mounted on both /api and / for maximum flexibility
 app.use('/api', voteRoutes);
+app.use('/', voteRoutes);
 
 // Global 404 handler
 app.use((_req: Request, res: Response) => {
