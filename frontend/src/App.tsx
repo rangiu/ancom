@@ -9,7 +9,7 @@ import { LegalModal } from './components/LegalModal';
 import { MetaHead } from './components/MetaHead';
 import { VoteStats, VoteChoice } from './types';
 import { fetchVoteStats } from './lib/api';
-import { getStoredVoteState } from './lib/storage';
+import { getStoredVoteState, getCachedStats, saveCachedStats } from './lib/storage';
 
 export const App: React.FC = () => {
   // Dark mode state with system preference auto-detection
@@ -37,13 +37,8 @@ export const App: React.FC = () => {
   // Vote state from storage
   const [userVote, setUserVote] = useState(() => getStoredVoteState());
 
-  // Statistics state
-  const [stats, setStats] = useState<VoteStats>({
-    ateCount: 1248,
-    notAteCount: 312,
-    totalVotes: 1560,
-    percentageAte: 80.0,
-  });
+  // Statistics state initialized from persistent local cache
+  const [stats, setStats] = useState<VoteStats>(() => getCachedStats());
 
   // Legal Modal State
   const [modalType, setModalType] = useState<'privacy' | 'terms' | null>(null);
@@ -73,6 +68,7 @@ export const App: React.FC = () => {
   }, []);
 
   const handleVoteSuccess = (newStats: VoteStats, choice: VoteChoice) => {
+    saveCachedStats(newStats);
     setStats(newStats);
     setUserVote({
       hasVoted: true,

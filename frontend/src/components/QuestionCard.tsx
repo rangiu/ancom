@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { VoteChoice, VoteStats } from '../types';
 import { submitVoteChoice } from '../lib/api';
-import { saveVoteState } from '../lib/storage';
+import { saveVoteState, getCachedStats, saveCachedStats } from '../lib/storage';
 import { StatsDisplay } from './StatsDisplay';
 import { Loader2, Sparkles } from 'lucide-react';
 
@@ -33,19 +33,27 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
     try {
       const newStats = await submitVoteChoice(choice);
       saveVoteState(choice);
+      saveCachedStats(newStats);
       onVoteSuccess(newStats, choice);
     } catch (err: any) {
-      console.error('Voting error:', err);
-      // Fallback local increment if API is unreachable/offline
+      console.error('Voting API error, applying persistent local increment:', err);
       saveVoteState(choice);
+      
+      const currentStats = getCachedStats();
+      const newAte = choice === 'ate' ? currentStats.ateCount + 1 : currentStats.ateCount;
+      const newNotAte = choice === 'not_yet' ? currentStats.notAteCount + 1 : currentStats.notAteCount;
+      const newTotal = currentStats.totalVotes + 1;
+      const newPct = Number(((newAte / newTotal) * 100).toFixed(1));
+
       const fallbackStats: VoteStats = {
-        ...stats,
-        ateCount: choice === 'ate' ? stats.ateCount + 1 : stats.ateCount,
-        notAteCount: choice === 'not_yet' ? stats.notAteCount + 1 : stats.notAteCount,
-        totalVotes: stats.totalVotes + 1,
-        percentageAte:
-          ((choice === 'ate' ? stats.ateCount + 1 : stats.ateCount) / (stats.totalVotes + 1)) * 100,
+        ateCount: newAte,
+        notAteCount: newNotAte,
+        totalVotes: newTotal,
+        percentageAte: newPct,
+        lastUpdated: new Date().toISOString(),
       };
+
+      saveCachedStats(fallbackStats);
       onVoteSuccess(fallbackStats, choice);
     } finally {
       setLoadingChoice(null);
