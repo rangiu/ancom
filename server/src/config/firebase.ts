@@ -97,7 +97,7 @@ export const recordVote = async (choice: 'ate' | 'not_yet', deviceToken: string)
     }
 
     const docRef = db.collection('statistics').doc('global');
-    await db.runTransaction(async (transaction) => {
+    await db.runTransaction(async (transaction: admin.firestore.Transaction) => {
       const statSnap = await transaction.get(docRef);
       const currentData = statSnap.data() || { ateCount: 0, notAteCount: 0 };
 
