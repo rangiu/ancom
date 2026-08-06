@@ -54,7 +54,7 @@
     }
   },
   "footer": {
-    "copyright": "© 2026 Dự án Ăn Cơm. Được xây dựng với React, Express & Firebase.",
+    "copyright": "© 2026 Dự án Ăn Cơm. Được xây dựng với React & Express.",
     "rights": "Bảo lưu mọi quyền."
   }
 }

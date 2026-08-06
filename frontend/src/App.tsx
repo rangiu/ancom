@@ -8,6 +8,7 @@ import { Footer } from './components/Footer';
 import { LegalModal } from './components/LegalModal';
 import { MetaHead } from './components/MetaHead';
 import { VoteStats, VoteChoice } from './types';
+import { fetchVoteStats } from './lib/api';
 import { getStoredVoteState, getCachedStats, saveCachedStats } from './lib/storage';
 
 export const App: React.FC = () => {
@@ -42,21 +43,30 @@ export const App: React.FC = () => {
   // Legal Modal State
   const [modalType, setModalType] = useState<'privacy' | 'terms' | null>(null);
 
-  // Watch for the Vietnam-local calendar day rolling over (00:00 daily reset)
-  // while the tab stays open, so counts and vote eligibility refresh without
-  // requiring a manual page reload.
+  // Poll the real backend for live global stats, and independently expire
+  // the local "already voted" state at the Vietnam-local day boundary (the
+  // backend resets its own counters at that same 00:00 boundary), so the
+  // UI stays correct without requiring a manual page reload.
   useEffect(() => {
-    const checkForDailyReset = () => {
-      setStats(getCachedStats());
-      setUserVote(getStoredVoteState());
+    let isMounted = true;
+
+    const loadStats = async () => {
+      const freshStats = await fetchVoteStats();
+      if (isMounted) setStats(freshStats);
     };
 
-    const interval = setInterval(checkForDailyReset, 30000);
-    window.addEventListener('focus', checkForDailyReset);
+    loadStats();
+    setUserVote(getStoredVoteState());
+
+    const statsInterval = setInterval(loadStats, 10000);
+    const dayCheckInterval = setInterval(() => setUserVote(getStoredVoteState()), 30000);
+    window.addEventListener('focus', loadStats);
 
     return () => {
-      clearInterval(interval);
-      window.removeEventListener('focus', checkForDailyReset);
+      isMounted = false;
+      clearInterval(statsInterval);
+      clearInterval(dayCheckInterval);
+      window.removeEventListener('focus', loadStats);
     };
   }, []);
 

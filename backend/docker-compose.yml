@@ -1,0 +1,15 @@
+services:
+  ancom-backend:
+    build: .
+    container_name: ancom-backend
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:4000:4000"
+    volumes:
+      - ancom_data:/app/data
+    environment:
+      - PORT=4000
+      - ALLOWED_ORIGINS=https://ancom-coral.vercel.app,http://localhost:5173
+
+volumes:
+  ancom_data:

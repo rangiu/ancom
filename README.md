@@ -6,18 +6,17 @@
 
 ## 📁 Cấu Trúc Thư Mục
 
-Dự án **100% tĩnh (static)**, không có backend/server nào — chỉ một thư mục duy nhất:
-
-- 🎨 **`frontend/`**: Mã nguồn Giao diện người dùng (React 18 + Vite + TypeScript + Tailwind CSS + i18n + Framer Motion) -> **Triển khai lên Vercel**.
+- 🎨 **`frontend/`**: Giao diện người dùng (React 18 + Vite + TypeScript + Tailwind CSS + i18n + Framer Motion) -> **Triển khai lên Vercel**.
+- ⚙️ **`backend/`**: API bộ đếm bình chọn toàn cầu (Node.js + Express, lưu trạng thái vào 1 file JSON trên đĩa) -> **Triển khai bằng Docker trên VPS riêng**, lộ ra internet qua **Cloudflare Tunnel** tại `https://ancom-api.sumflow.online`.
 
 ---
 
-## ⚡ Cách hoạt động của số liệu (không backend)
+## ⚡ Cách hoạt động của số liệu
 
-- Mỗi lượt bấm "Đã ăn" / "Chưa ăn" **cộng số thật**, lưu ngay vào `localStorage` của trình duyệt — không phải số ảo, không bị mất khi tải lại trang.
-- Số liệu là **theo từng trình duyệt/thiết bị** (không phải số liệu toàn cầu dùng chung, vì không có server/database nào lưu trữ tập trung).
-- **Tự động reset về 0 lúc 00:00 giờ Việt Nam (UTC+7) mỗi ngày**: mỗi lần mở app, hoặc mỗi 30 giây/khi quay lại tab trong lúc đang mở, app sẽ kiểm tra ngày hiện tại (theo giờ VN) — nếu đã sang ngày mới, số liệu và trạng thái "đã bình chọn" sẽ tự xoá để bắt đầu lại từ 0.
-- Logic reset nằm ở [`frontend/src/lib/storage.ts`](frontend/src/lib/storage.ts) (hàm `ensureDailyReset`).
+- Số liệu là **số liệu chung toàn cầu** — mọi người bấm vào cùng một bộ đếm thật trên server, không phải số ảo và không mất khi tải lại trang.
+- Mỗi thiết bị (`deviceToken` lưu trong `localStorage`) chỉ được bình chọn **1 lần/ngày** — server từ chối nếu bình chọn trùng trong cùng ngày.
+- **Tự động reset về 0 lúc 00:00 giờ Việt Nam (UTC+7) mỗi ngày**, chạy trên server (`backend/server.js`, dùng `node-cron` với timezone `Asia/Ho_Chi_Minh`, có thêm cơ chế kiểm tra dự phòng mỗi phút phòng khi server restart đúng lúc gần nửa đêm).
+- Frontend gọi `GET /api/stats` (polling mỗi 10 giây) và `POST /api/vote` tới backend qua [`frontend/src/lib/api.ts`](frontend/src/lib/api.ts).
 
 ---
 
@@ -26,45 +25,62 @@ Dự án **100% tĩnh (static)**, không có backend/server nào — chỉ một
 - 🍎 **Giao diện chuẩn Apple Aesthetic**: nền trắng sạch, hiệu ứng kính mờ `backdrop-blur`, bo góc mềm (`rounded-3xl`), micro-animation mượt bằng `framer-motion`.
 - 🌓 **Tự động Dark Mode**: theo hệ thống thiết bị, cho phép chuyển đổi thủ công.
 - 🌐 **Đa ngôn ngữ (i18n)**: 🇻🇳 Tiếng Việt & 🇺🇸 English, tự nhận diện ngôn ngữ trình duyệt, lưu lựa chọn vào `localStorage`.
-- ⚡ **Số liệu thật, lưu bền & tự reset hàng ngày** (xem mục trên).
+- ⚡ **Số liệu chung toàn cầu, thời gian thực, tự reset hàng ngày** (xem mục trên).
+- 🚫 **Chống spam**: mỗi thiết bị chỉ bình chọn được 1 lần/ngày (kiểm tra ở backend) + rate-limit theo IP (`express-rate-limit`).
 - 🔍 **Tối Ưu SEO & AdSense Ready**: Meta Title/Description/Open Graph/Twitter Cards, `robots.txt` & `sitemap.xml`, trang Chính sách bảo mật & Điều khoản sử dụng.
 
 ---
 
 ## 🛠️ Công Nghệ Sử Dụng
 
+### Frontend (`/frontend`)
 - **Core**: React 18 + Vite + TypeScript (Strict Mode)
 - **Styling**: Tailwind CSS + Custom Apple Design Tokens
 - **Icons & Animation**: Lucide React + Framer Motion
 - **i18n**: `i18next` + `react-i18next` + `i18next-browser-languagedetector`
 - **SEO**: `react-helmet-async`
-- **Lưu trữ số liệu**: `localStorage` (không backend, không database)
+
+### Backend (`/backend`)
+- **Core**: Node.js + Express
+- **Lưu trữ**: file JSON trên đĩa (atomic write), đủ dùng cho quy mô bộ đếm này — không cần database ngoài
+- **Lịch reset**: `node-cron` (`Asia/Ho_Chi_Minh`) + kiểm tra dự phòng mỗi 60s
+- **Bảo mật**: CORS giới hạn origin, `express-rate-limit`
+- **Triển khai**: Docker (`Dockerfile` + `docker-compose.yml`), chạy trên VPS, chỉ bind `127.0.0.1:4000` — lộ ra internet qua Cloudflare Tunnel (không mở port nào ra ngoài)
 
 ---
 
 ## 🚀 Hướng Dẫn Cài Đặt & Chạy Cục Bộ (Local)
 
+### Frontend
 ```bash
 npm run install:all   # cài dependencies cho frontend
 npm run dev            # chạy dev server tại http://localhost:5173
+```
+Mặc định frontend gọi thẳng vào backend production (`https://ancom-api.sumflow.online/api`). Muốn trỏ vào backend chạy local thì tạo file `.env.local` trong `frontend/` với `VITE_API_BASE_URL=http://localhost:4000/api`.
+
+### Backend (tuỳ chọn, chỉ cần khi phát triển backend)
+```bash
+cd backend
+npm install
+npm start   # chạy tại http://localhost:4000
 ```
 
 ## 🧱 Build
 
 ```bash
-npm run build           # build ra frontend/dist
+npm run build           # build frontend ra frontend/dist
 ```
 
 ---
 
-## ☁️ Triển Khai Lên Vercel
+## ☁️ Triển Khai Production
 
-1. Đẩy mã nguồn lên GitHub (nếu muốn deploy qua Git integration), hoặc deploy trực tiếp bằng Vercel CLI từ thư mục gốc dự án:
-   ```bash
-   npx vercel --prod
-   ```
-2. Cấu hình build đã có sẵn trong [`vercel.json`](vercel.json) ở thư mục gốc:
-   - **Build Command**: `npm run build --prefix frontend`
-   - **Output Directory**: `frontend/dist`
-3. (Tuỳ chọn) Thêm biến môi trường `VITE_ADSENSE_CLIENT_ID` nếu dùng Google AdSense.
-4. Không cần thêm bước nào khác — không có backend, không có database, không cron job phía server. Việc reset hàng ngày chạy hoàn toàn trên trình duyệt người dùng.
+### Frontend -> Vercel
+Repo được kết nối Git với Vercel — mỗi lần push lên nhánh `main` sẽ tự động build & deploy. Cấu hình build nằm sẵn trong [`vercel.json`](vercel.json):
+- **Build Command**: `npm run build --prefix frontend`
+- **Output Directory**: `frontend/dist`
+
+### Backend -> VPS riêng (Docker + Cloudflare Tunnel)
+1. Copy thư mục `backend/` lên server.
+2. `docker compose -p ancom-backend up -d --build`
+3. Thêm 1 **Public Hostname** trong Cloudflare Zero Trust Tunnel dashboard trỏ `ancom-api.sumflow.online` -> `http://localhost:4000` (không cần mở port nào trên server).

@@ -1,0 +1,16 @@
+{
+  "name": "ancom-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Minimal global vote-counter API for An Com, with a daily reset at 00:00 Asia/Ho_Chi_Minh time.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "node-cron": "^3.0.3"
+  }
+}

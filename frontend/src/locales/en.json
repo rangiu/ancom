@@ -54,7 +54,7 @@
     }
   },
   "footer": {
-    "copyright": "© 2026 Eat Rice Project. Built with love, React, Express & Firebase.",
+    "copyright": "© 2026 Eat Rice Project. Built with love, React & Express.",
     "rights": "All rights reserved."
   }
 }
