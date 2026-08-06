@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  <url>
-    <loc>https://ancom.vercel.app/</loc>
-    <lastmod>2026-08-05</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://ancom.vercel.app/?lang=vi"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://ancom.vercel.app/?lang=en"/>
-  </url>
-</urlset>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://ancom-coral.vercel.app/sitemap-main.xml</loc>
+    <lastmod>2026-08-07</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://ancom-coral.vercel.app/sitemap-vi.xml</loc>
+    <lastmod>2026-08-07</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://ancom-coral.vercel.app/sitemap-en.xml</loc>
+    <lastmod>2026-08-07</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://ancom-coral.vercel.app/sitemap-pages.xml</loc>
+    <lastmod>2026-08-07</lastmod>
+  </sitemap>
+</sitemapindex>
