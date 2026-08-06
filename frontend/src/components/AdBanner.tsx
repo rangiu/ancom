@@ -22,7 +22,7 @@ export const AdBanner: React.FC<AdBannerProps> = ({ slotId = '1234567890', posit
         <ins
           className="adsbygoogle"
           style={{ display: 'block', width: '100%', minHeight: '90px' }}
-          data-ad-client={import.meta.env.VITE_ADSENSE_CLIENT_ID || 'ca-pub-XXXXXXXXXXXXXXXX'}
+          data-ad-client={import.meta.env.VITE_ADSENSE_CLIENT_ID || 'ca-pub-9103455158021249'}
           data-ad-slot={slotId}
           data-ad-format="auto"
           data-full-width-responsive="true"
