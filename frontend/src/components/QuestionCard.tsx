@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { VoteChoice, VoteStats } from '../types';
-import { submitVoteChoice } from '../lib/api';
-import { saveVoteState, getCachedStats, saveCachedStats } from '../lib/storage';
+import { saveVoteState, recordVoteLocally } from '../lib/storage';
 import { StatsDisplay } from './StatsDisplay';
-import { Loader2, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
 interface QuestionCardProps {
   hasVoted: boolean;
@@ -21,43 +20,13 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   onVoteSuccess,
 }) => {
   const { t } = useTranslation();
-  const [loadingChoice, setLoadingChoice] = useState<VoteChoice | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleVote = async (choice: VoteChoice) => {
-    if (hasVoted || loadingChoice) return;
+  const handleVote = (choice: VoteChoice) => {
+    if (hasVoted) return;
 
-    setLoadingChoice(choice);
-    setErrorMessage(null);
-
-    try {
-      const newStats = await submitVoteChoice(choice);
-      saveVoteState(choice);
-      saveCachedStats(newStats);
-      onVoteSuccess(newStats, choice);
-    } catch (err: any) {
-      console.error('Voting API error, applying persistent local increment:', err);
-      saveVoteState(choice);
-      
-      const currentStats = getCachedStats();
-      const newAte = choice === 'ate' ? currentStats.ateCount + 1 : currentStats.ateCount;
-      const newNotAte = choice === 'not_yet' ? currentStats.notAteCount + 1 : currentStats.notAteCount;
-      const newTotal = currentStats.totalVotes + 1;
-      const newPct = Number(((newAte / newTotal) * 100).toFixed(1));
-
-      const fallbackStats: VoteStats = {
-        ateCount: newAte,
-        notAteCount: newNotAte,
-        totalVotes: newTotal,
-        percentageAte: newPct,
-        lastUpdated: new Date().toISOString(),
-      };
-
-      saveCachedStats(fallbackStats);
-      onVoteSuccess(fallbackStats, choice);
-    } finally {
-      setLoadingChoice(null);
-    }
+    const newStats = recordVoteLocally(choice);
+    saveVoteState(choice);
+    onVoteSuccess(newStats, choice);
   };
 
   return (
@@ -88,13 +57,6 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
               {t('questionCard.subtitle')}
             </p>
 
-            {/* Error Message if any */}
-            {errorMessage && (
-              <div className="mb-6 p-3 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-medium">
-                {errorMessage}
-              </div>
-            )}
-
             {/* Voting Action Buttons */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Button 1: Ate Rice */}
@@ -102,20 +64,13 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.96 }}
                 onClick={() => handleVote('ate')}
-                disabled={Boolean(loadingChoice)}
                 id="btn-ate-rice"
-                className="group relative flex items-center justify-center space-x-3 p-5 rounded-2xl bg-gradient-to-r from-amber-400 to-orange-500 text-white font-bold text-lg shadow-glowRice hover:shadow-xl transition-all duration-300 disabled:opacity-60"
+                className="group relative flex items-center justify-center space-x-3 p-5 rounded-2xl bg-gradient-to-r from-amber-400 to-orange-500 text-white font-bold text-lg shadow-glowRice hover:shadow-xl transition-all duration-300"
               >
-                {loadingChoice === 'ate' ? (
-                  <Loader2 className="w-6 h-6 animate-spin" />
-                ) : (
-                  <>
-                    <span className="text-2xl group-hover:scale-125 transition-transform duration-300">
-                      🍚
-                    </span>
-                    <span>{t('questionCard.btnAte')}</span>
-                  </>
-                )}
+                <span className="text-2xl group-hover:scale-125 transition-transform duration-300">
+                  🍚
+                </span>
+                <span>{t('questionCard.btnAte')}</span>
               </motion.button>
 
               {/* Button 2: Not Yet */}
@@ -123,20 +78,13 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.96 }}
                 onClick={() => handleVote('not_yet')}
-                disabled={Boolean(loadingChoice)}
                 id="btn-not-yet"
-                className="group relative flex items-center justify-center space-x-3 p-5 rounded-2xl bg-gradient-to-r from-rose-500 to-red-600 text-white font-bold text-lg shadow-glowNotYet hover:shadow-xl transition-all duration-300 disabled:opacity-60"
+                className="group relative flex items-center justify-center space-x-3 p-5 rounded-2xl bg-gradient-to-r from-rose-500 to-red-600 text-white font-bold text-lg shadow-glowNotYet hover:shadow-xl transition-all duration-300"
               >
-                {loadingChoice === 'not_yet' ? (
-                  <Loader2 className="w-6 h-6 animate-spin" />
-                ) : (
-                  <>
-                    <span className="text-2xl group-hover:scale-125 transition-transform duration-300">
-                      😢
-                    </span>
-                    <span>{t('questionCard.btnNotYet')}</span>
-                  </>
-                )}
+                <span className="text-2xl group-hover:scale-125 transition-transform duration-300">
+                  😢
+                </span>
+                <span>{t('questionCard.btnNotYet')}</span>
               </motion.button>
             </div>
           </motion.div>

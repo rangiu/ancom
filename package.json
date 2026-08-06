@@ -1,22 +1,18 @@
 {
   "name": "ancom-project",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
-  "description": "DỰ ÁN: ĂN CƠM (Eat Rice) - Website toàn cầu: Hôm nay bạn đã ăn cơm chưa?",
+  "description": "DỰ ÁN: ĂN CƠM (Eat Rice) - Website toàn cầu: Hôm nay bạn đã ăn cơm chưa? (100% static, no backend)",
   "scripts": {
-    "install:all": "npm install --prefix frontend && npm install --prefix backend",
-    "dev:frontend": "npm run dev --prefix frontend",
-    "dev:backend": "npm run dev --prefix backend",
-    "build:frontend": "npm run build --prefix frontend",
-    "build:backend": "npm run build --prefix backend",
-    "build": "npm run build:frontend && npm run build:backend"
+    "install:all": "npm install --prefix frontend",
+    "dev": "npm run dev --prefix frontend",
+    "build": "npm run build --prefix frontend"
   },
   "keywords": [
     "eat-rice",
     "an-com",
     "react",
-    "express",
-    "firebase",
+    "vite",
     "tailwindcss",
     "i18n"
   ],

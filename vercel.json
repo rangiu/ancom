@@ -1,24 +1,11 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "frontend/package.json",
-      "use": "@vercel/static-build",
-      "config": { "distDir": "dist" }
-    }
-  ],
+  "installCommand": "npm install --prefix frontend",
+  "buildCommand": "npm run build --prefix frontend",
+  "outputDirectory": "frontend/dist",
   "routes": [
-    {
-      "src": "/robots.txt",
-      "dest": "frontend/robots.txt"
-    },
-    {
-      "src": "/sitemap.xml",
-      "dest": "frontend/sitemap.xml"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "frontend/$1"
-    }
+    { "src": "/robots.txt", "dest": "/robots.txt" },
+    { "src": "/sitemap.xml", "dest": "/sitemap.xml" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }

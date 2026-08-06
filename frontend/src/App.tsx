@@ -8,7 +8,6 @@ import { Footer } from './components/Footer';
 import { LegalModal } from './components/LegalModal';
 import { MetaHead } from './components/MetaHead';
 import { VoteStats, VoteChoice } from './types';
-import { fetchVoteStats } from './lib/api';
 import { getStoredVoteState, getCachedStats, saveCachedStats } from './lib/storage';
 
 export const App: React.FC = () => {
@@ -43,27 +42,21 @@ export const App: React.FC = () => {
   // Legal Modal State
   const [modalType, setModalType] = useState<'privacy' | 'terms' | null>(null);
 
-  // Load initial stats & poll periodically every 5 seconds for live realtime updates
+  // Watch for the Vietnam-local calendar day rolling over (00:00 daily reset)
+  // while the tab stays open, so counts and vote eligibility refresh without
+  // requiring a manual page reload.
   useEffect(() => {
-    let isMounted = true;
-
-    const loadStats = async () => {
-      try {
-        const freshStats = await fetchVoteStats();
-        if (isMounted) {
-          setStats(freshStats);
-        }
-      } catch (err) {
-        console.error('Error fetching live stats:', err);
-      }
+    const checkForDailyReset = () => {
+      setStats(getCachedStats());
+      setUserVote(getStoredVoteState());
     };
 
-    loadStats();
-    const interval = setInterval(loadStats, 5000);
+    const interval = setInterval(checkForDailyReset, 30000);
+    window.addEventListener('focus', checkForDailyReset);
 
     return () => {
-      isMounted = false;
       clearInterval(interval);
+      window.removeEventListener('focus', checkForDailyReset);
     };
   }, []);
 
