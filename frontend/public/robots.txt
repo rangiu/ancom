@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ancom.vercel.app/sitemap.xml
+Sitemap: https://ancom-coral.vercel.app/sitemap.xml
