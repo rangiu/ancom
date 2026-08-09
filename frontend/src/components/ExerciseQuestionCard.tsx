@@ -12,6 +12,7 @@ interface ExerciseQuestionCardProps {
   userChoice: ExerciseChoice | null;
   stats: ExerciseStats;
   onVoteSuccess: (newStats: ExerciseStats, choice: ExerciseChoice) => void;
+  onOpenLibrary: () => void;
 }
 
 export const ExerciseQuestionCard: React.FC<ExerciseQuestionCardProps> = ({
@@ -19,6 +20,7 @@ export const ExerciseQuestionCard: React.FC<ExerciseQuestionCardProps> = ({
   userChoice,
   stats,
   onVoteSuccess,
+  onOpenLibrary,
 }) => {
   const { t } = useTranslation();
   const [loadingChoice, setLoadingChoice] = useState<ExerciseChoice | null>(null);
@@ -112,7 +114,12 @@ export const ExerciseQuestionCard: React.FC<ExerciseQuestionCardProps> = ({
             </div>
           </motion.div>
         ) : (
-          <ExerciseStatsDisplay key="exercise-stats-card" stats={stats} userChoice={userChoice} />
+          <ExerciseStatsDisplay
+            key="exercise-stats-card"
+            stats={stats}
+            userChoice={userChoice}
+            onOpenLibrary={onOpenLibrary}
+          />
         )}
       </AnimatePresence>
     </div>

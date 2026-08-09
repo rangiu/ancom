@@ -39,6 +39,12 @@
       "badge": "Today's Exercise Pick",
       "howTo": "See how to do it"
     },
+    "library": {
+      "viewAll": "View all exercises",
+      "title": "Exercise Library",
+      "subtitle": "40 equipment-free exercises — tap one to see step-by-step instructions.",
+      "back": "Back"
+    },
     "stats": {
       "title": "Today's Movement Stats",
       "totalVotes": "Total Votes",

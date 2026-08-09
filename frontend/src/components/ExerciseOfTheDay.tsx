@@ -1,10 +1,14 @@
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Dumbbell, Target } from 'lucide-react';
+import { ChevronDown, Dumbbell, Target, LayoutGrid } from 'lucide-react';
 import { getExerciseOfTheDay } from '../data/exercises';
 
-export const ExerciseOfTheDay: React.FC = () => {
+interface ExerciseOfTheDayProps {
+  onOpenLibrary: () => void;
+}
+
+export const ExerciseOfTheDay: React.FC<ExerciseOfTheDayProps> = ({ onOpenLibrary }) => {
   const { t, i18n } = useTranslation();
   const [expanded, setExpanded] = useState(false);
   const [gifErrored, setGifErrored] = useState(false);
@@ -16,9 +20,18 @@ export const ExerciseOfTheDay: React.FC = () => {
   return (
     <div className="w-full max-w-xl mx-auto px-4 mt-4">
       <div className="p-6 sm:p-8 rounded-3xl apple-glass apple-border shadow-appleCard dark:shadow-appleCardDark relative overflow-hidden">
-        <div className="flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-xs font-semibold mb-5 w-fit">
-          <Dumbbell className="w-3.5 h-3.5" />
-          <span>{t('exercise.ofTheDay.badge')}</span>
+        <div className="flex items-center justify-between gap-3 mb-5">
+          <div className="flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-xs font-semibold w-fit">
+            <Dumbbell className="w-3.5 h-3.5" />
+            <span>{t('exercise.ofTheDay.badge')}</span>
+          </div>
+          <button
+            onClick={onOpenLibrary}
+            className="flex items-center gap-1.5 text-xs font-semibold text-apple-accent shrink-0"
+          >
+            <LayoutGrid className="w-3.5 h-3.5" />
+            {t('exercise.library.viewAll')}
+          </button>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-5">

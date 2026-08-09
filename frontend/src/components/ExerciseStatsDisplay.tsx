@@ -2,14 +2,15 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { ExerciseStats, ExerciseChoice } from '../types';
-import { Users, CheckCircle2, XCircle, Activity } from 'lucide-react';
+import { Users, CheckCircle2, XCircle, Activity, LayoutGrid } from 'lucide-react';
 
 interface ExerciseStatsDisplayProps {
   stats: ExerciseStats;
   userChoice?: ExerciseChoice | null;
+  onOpenLibrary?: () => void;
 }
 
-export const ExerciseStatsDisplay: React.FC<ExerciseStatsDisplayProps> = ({ stats, userChoice }) => {
+export const ExerciseStatsDisplay: React.FC<ExerciseStatsDisplayProps> = ({ stats, userChoice, onOpenLibrary }) => {
   const { t } = useTranslation();
 
   const didPercent = Math.min(100, Math.max(0, stats.percentageDid));
@@ -124,8 +125,14 @@ export const ExerciseStatsDisplay: React.FC<ExerciseStatsDisplayProps> = ({ stat
           </div>
         </div>
 
-        <div className="mt-6 text-center text-xs text-apple-secondary font-medium">
-          ✓ {t('stats.updating')}
+        <div className="mt-6 flex items-center justify-center gap-4 text-center text-xs text-apple-secondary font-medium">
+          <span>✓ {t('stats.updating')}</span>
+          {onOpenLibrary && (
+            <button onClick={onOpenLibrary} className="flex items-center gap-1 font-semibold text-apple-accent">
+              <LayoutGrid className="w-3 h-3" />
+              {t('exercise.library.viewAll')}
+            </button>
+          )}
         </div>
       </div>
     </motion.div>

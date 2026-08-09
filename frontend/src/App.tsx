@@ -5,6 +5,7 @@ import { Header } from './components/Header';
 import { QuestionCard } from './components/QuestionCard';
 import { ExerciseOfTheDay } from './components/ExerciseOfTheDay';
 import { ExerciseQuestionCard } from './components/ExerciseQuestionCard';
+import { ExerciseLibraryModal } from './components/ExerciseLibraryModal';
 import { AdBanner } from './components/AdBanner';
 import { Footer } from './components/Footer';
 import { LegalModal } from './components/LegalModal';
@@ -55,6 +56,9 @@ export const App: React.FC = () => {
 
   // Legal Modal State
   const [modalType, setModalType] = useState<'privacy' | 'terms' | null>(null);
+
+  // Exercise Library Modal State
+  const [isLibraryOpen, setIsLibraryOpen] = useState(false);
 
   // Poll the real backend for live global stats, and independently expire
   // the local "already voted" state at the Vietnam-local day boundary (the
@@ -132,12 +136,13 @@ export const App: React.FC = () => {
           />
 
           {/* Exercise Question & Daily Suggestion */}
-          {!exerciseVote.hasVoted && <ExerciseOfTheDay />}
+          {!exerciseVote.hasVoted && <ExerciseOfTheDay onOpenLibrary={() => setIsLibraryOpen(true)} />}
           <ExerciseQuestionCard
             hasVoted={exerciseVote.hasVoted}
             userChoice={exerciseVote.choice}
             stats={exerciseStats}
             onVoteSuccess={handleExerciseVoteSuccess}
+            onOpenLibrary={() => setIsLibraryOpen(true)}
           />
 
           {/* Bottom AdSense Banner */}
@@ -153,6 +158,9 @@ export const App: React.FC = () => {
           type={modalType}
           onClose={() => setModalType(null)}
         />
+
+        {/* Exercise Library Modal */}
+        <ExerciseLibraryModal isOpen={isLibraryOpen} onClose={() => setIsLibraryOpen(false)} />
       </div>
     </HelmetProvider>
   );

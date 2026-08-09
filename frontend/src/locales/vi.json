@@ -39,6 +39,12 @@
       "badge": "Gợi ý bài tập hôm nay",
       "howTo": "Xem hướng dẫn"
     },
+    "library": {
+      "viewAll": "Xem tất cả bài tập",
+      "title": "Thư Viện Bài Tập",
+      "subtitle": "40 bài tập không cần dụng cụ — bấm vào 1 bài để xem hướng dẫn chi tiết.",
+      "back": "Quay lại"
+    },
     "stats": {
       "title": "Thống kê vận động hôm nay",
       "totalVotes": "Tổng lượt bình chọn",

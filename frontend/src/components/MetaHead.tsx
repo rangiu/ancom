@@ -10,9 +10,9 @@ export const MetaHead: React.FC = () => {
   const siteDescription = t('site.description');
   const baseUrl = 'https://ancom-coral.vercel.app/';
 
-  const keywords = currentLang === 'vi' 
-    ? 'hôm nay bạn đã ăn cơm chưa, ăn cơm, dự án ăn cơm, điểm danh ăn cơm, thống kê ăn cơm, eat rice, have you eaten rice today'
-    : 'have you eaten rice today, eat rice, global rice checkin, rice community, daily rice checkin';
+  const keywords = currentLang === 'vi'
+    ? 'hôm nay bạn đã ăn cơm chưa, ăn cơm, dự án ăn cơm, điểm danh ăn cơm, thống kê ăn cơm, eat rice, have you eaten rice today, hôm nay bạn đã tập thể dục chưa, bài tập thể dục tại nhà, thư viện bài tập'
+    : 'have you eaten rice today, eat rice, global rice checkin, rice community, daily rice checkin, have you exercised today, home workout exercises, bodyweight exercise library';
 
   // Schema.org Structured Data (JSON-LD) for Google Rich Snippets
   const jsonLd = {
@@ -35,9 +35,19 @@ export const MetaHead: React.FC = () => {
           'name': currentLang === 'vi' ? 'Hôm nay bạn đã ăn cơm chưa?' : 'Have you eaten rice today?',
           'acceptedAnswer': {
             '@type': 'Answer',
-            'text': currentLang === 'vi' 
+            'text': currentLang === 'vi'
               ? 'Điểm danh hàng ngày cùng hàng triệu người trên thế giới với câu hỏi: Hôm nay bạn đã ăn cơm chưa?'
               : 'Join millions worldwide in answering the daily question: Have you eaten rice today?'
+          }
+        },
+        {
+          '@type': 'Question',
+          'name': currentLang === 'vi' ? 'Hôm nay bạn đã tập thể dục chưa?' : 'Have you exercised today?',
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': currentLang === 'vi'
+              ? 'Điểm danh vận động mỗi ngày, xem gợi ý bài tập không cần dụng cụ và duyệt thư viện 40 bài tập tại nhà.'
+              : 'Check in daily on movement, see a no-equipment exercise suggestion, and browse a library of 40 home workout exercises.'
           }
         }
       ]
