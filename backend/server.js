@@ -23,7 +23,15 @@ function todayVN() {
 }
 
 function freshState() {
-  return { day: todayVN(), ateCount: 0, notAteCount: 0, votedTokens: [] };
+  return {
+    day: todayVN(),
+    ateCount: 0,
+    notAteCount: 0,
+    votedTokens: [],
+    exerciseDidCount: 0,
+    exerciseNotDidCount: 0,
+    exerciseVotedTokens: [],
+  };
 }
 
 function loadState() {
@@ -36,6 +44,11 @@ function loadState() {
       typeof parsed.notAteCount === 'number' &&
       Array.isArray(parsed.votedTokens)
     ) {
+      // Backfill exercise fields for state files written before this feature
+      // existed, so an older data.json on disk doesn't get rejected wholesale.
+      if (typeof parsed.exerciseDidCount !== 'number') parsed.exerciseDidCount = 0;
+      if (typeof parsed.exerciseNotDidCount !== 'number') parsed.exerciseNotDidCount = 0;
+      if (!Array.isArray(parsed.exerciseVotedTokens)) parsed.exerciseVotedTokens = [];
       return parsed;
     }
   } catch (err) {
@@ -77,6 +90,18 @@ function computeStats() {
     notAteCount: state.notAteCount,
     totalVotes,
     percentageAte,
+    lastUpdated: new Date().toISOString(),
+  };
+}
+
+function computeExerciseStats() {
+  const totalVotes = state.exerciseDidCount + state.exerciseNotDidCount;
+  const percentageDid = totalVotes > 0 ? Number(((state.exerciseDidCount / totalVotes) * 100).toFixed(1)) : 0;
+  return {
+    didCount: state.exerciseDidCount,
+    notDidCount: state.exerciseNotDidCount,
+    totalVotes,
+    percentageDid,
     lastUpdated: new Date().toISOString(),
   };
 }
@@ -132,6 +157,37 @@ app.post('/api/vote', voteLimiter, (req, res) => {
   saveState(state);
 
   res.json({ success: true, message: 'Vote recorded successfully', data: computeStats() });
+});
+
+app.get('/api/exercise/stats', (_req, res) => {
+  ensureDailyReset();
+  res.json({ success: true, data: computeExerciseStats() });
+});
+
+app.post('/api/exercise/vote', voteLimiter, (req, res) => {
+  ensureDailyReset();
+
+  const { choice, deviceToken } = req.body || {};
+  const validChoice = choice === 'did' || choice === 'not_yet';
+  const validToken = typeof deviceToken === 'string' && deviceToken.length >= 5 && deviceToken.length <= 100;
+
+  if (!validChoice || !validToken) {
+    return res.status(400).json({ success: false, error: 'Invalid input payload.' });
+  }
+
+  if (state.exerciseVotedTokens.includes(deviceToken)) {
+    return res.status(400).json({ success: false, error: 'This device has already voted today.' });
+  }
+
+  state.exerciseVotedTokens.push(deviceToken);
+  if (choice === 'did') {
+    state.exerciseDidCount += 1;
+  } else {
+    state.exerciseNotDidCount += 1;
+  }
+  saveState(state);
+
+  res.json({ success: true, message: 'Vote recorded successfully', data: computeExerciseStats() });
 });
 
 app.use((_req, res) => {

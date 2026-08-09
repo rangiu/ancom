@@ -28,6 +28,26 @@
     "ratioLabel": "số người bình chọn đã ăn cơm hôm nay",
     "updating": "Cập nhật liên tục"
   },
+  "exercise": {
+    "badge": "Vận động mỗi ngày",
+    "title": "Hôm nay bạn đã tập thể dục chưa?",
+    "subtitle": "Chọn câu trả lời của bạn bên dưới. Mỗi thiết bị chỉ được bình chọn một lần.",
+    "btnDid": "Đã tập rồi",
+    "btnNotYet": "Chưa tập",
+    "alreadyVotedTag": "Bạn đã hoàn thành bình chọn hôm nay",
+    "ofTheDay": {
+      "badge": "Gợi ý bài tập hôm nay",
+      "howTo": "Xem hướng dẫn"
+    },
+    "stats": {
+      "title": "Thống kê vận động hôm nay",
+      "totalVotes": "Tổng lượt bình chọn",
+      "didCount": "Đã tập",
+      "notDidCount": "Chưa tập",
+      "percentageDid": "Tỷ lệ đã tập",
+      "ratioLabel": "số người bình chọn đã tập thể dục hôm nay"
+    }
+  },
   "adsense": {
     "sponsored": "Quảng cáo",
     "placeholder": "Vị trí dành cho Google AdSense"

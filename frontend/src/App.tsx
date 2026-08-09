@@ -3,13 +3,22 @@ import { HelmetProvider } from 'react-helmet-async';
 import './lib/i18n';
 import { Header } from './components/Header';
 import { QuestionCard } from './components/QuestionCard';
+import { ExerciseOfTheDay } from './components/ExerciseOfTheDay';
+import { ExerciseQuestionCard } from './components/ExerciseQuestionCard';
 import { AdBanner } from './components/AdBanner';
 import { Footer } from './components/Footer';
 import { LegalModal } from './components/LegalModal';
 import { MetaHead } from './components/MetaHead';
-import { VoteStats, VoteChoice } from './types';
-import { fetchVoteStats } from './lib/api';
-import { getStoredVoteState, getCachedStats, saveCachedStats } from './lib/storage';
+import { VoteStats, VoteChoice, ExerciseStats, ExerciseChoice } from './types';
+import { fetchVoteStats, fetchExerciseStats } from './lib/api';
+import {
+  getStoredVoteState,
+  getCachedStats,
+  saveCachedStats,
+  getStoredExerciseVoteState,
+  getCachedExerciseStats,
+  saveCachedExerciseStats,
+} from './lib/storage';
 
 export const App: React.FC = () => {
   // Dark mode state with system preference auto-detection
@@ -40,6 +49,10 @@ export const App: React.FC = () => {
   // Statistics state initialized from persistent local cache
   const [stats, setStats] = useState<VoteStats>(() => getCachedStats());
 
+  // Exercise question state — fully independent from the rice question above.
+  const [exerciseVote, setExerciseVote] = useState(() => getStoredExerciseVoteState());
+  const [exerciseStats, setExerciseStats] = useState<ExerciseStats>(() => getCachedExerciseStats());
+
   // Legal Modal State
   const [modalType, setModalType] = useState<'privacy' | 'terms' | null>(null);
 
@@ -51,15 +64,23 @@ export const App: React.FC = () => {
     let isMounted = true;
 
     const loadStats = async () => {
-      const freshStats = await fetchVoteStats();
-      if (isMounted) setStats(freshStats);
+      const [freshStats, freshExerciseStats] = await Promise.all([fetchVoteStats(), fetchExerciseStats()]);
+      if (isMounted) {
+        setStats(freshStats);
+        setExerciseStats(freshExerciseStats);
+      }
+    };
+
+    const refreshVoteState = () => {
+      setUserVote(getStoredVoteState());
+      setExerciseVote(getStoredExerciseVoteState());
     };
 
     loadStats();
-    setUserVote(getStoredVoteState());
+    refreshVoteState();
 
     const statsInterval = setInterval(loadStats, 10000);
-    const dayCheckInterval = setInterval(() => setUserVote(getStoredVoteState()), 30000);
+    const dayCheckInterval = setInterval(refreshVoteState, 30000);
     window.addEventListener('focus', loadStats);
 
     return () => {
@@ -74,6 +95,16 @@ export const App: React.FC = () => {
     saveCachedStats(newStats);
     setStats(newStats);
     setUserVote({
+      hasVoted: true,
+      choice,
+      votedAt: new Date().toISOString(),
+    });
+  };
+
+  const handleExerciseVoteSuccess = (newStats: ExerciseStats, choice: ExerciseChoice) => {
+    saveCachedExerciseStats(newStats);
+    setExerciseStats(newStats);
+    setExerciseVote({
       hasVoted: true,
       choice,
       votedAt: new Date().toISOString(),
@@ -98,6 +129,15 @@ export const App: React.FC = () => {
             userChoice={userVote.choice}
             stats={stats}
             onVoteSuccess={handleVoteSuccess}
+          />
+
+          {/* Exercise Question & Daily Suggestion */}
+          {!exerciseVote.hasVoted && <ExerciseOfTheDay />}
+          <ExerciseQuestionCard
+            hasVoted={exerciseVote.hasVoted}
+            userChoice={exerciseVote.choice}
+            stats={exerciseStats}
+            onVoteSuccess={handleExerciseVoteSuccess}
           />
 
           {/* Bottom AdSense Banner */}

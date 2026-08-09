@@ -20,3 +20,21 @@ export interface ApiResponse<T = any> {
   data?: T;
   error?: string;
 }
+
+// ---- Exercise ("Hôm nay bạn đã tập thể dục chưa?") ----
+
+export type ExerciseChoice = 'did' | 'not_yet';
+
+export interface ExerciseStats {
+  didCount: number;
+  notDidCount: number;
+  totalVotes: number;
+  percentageDid: number;
+  lastUpdated?: string;
+}
+
+export interface ExerciseVoteState {
+  hasVoted: boolean;
+  choice: ExerciseChoice | null;
+  votedAt?: string;
+}

@@ -1,4 +1,4 @@
-import { VoteChoice, UserVoteState, VoteStats } from '../types';
+import { VoteChoice, UserVoteState, VoteStats, ExerciseChoice, ExerciseVoteState, ExerciseStats } from '../types';
 
 const STORAGE_KEY_VOTE = 'ancom_vote_choice';
 const STORAGE_KEY_TIME = 'ancom_vote_time';
@@ -6,6 +6,22 @@ const STORAGE_KEY_TOKEN = 'ancom_device_token';
 const STORAGE_KEY_STATS = 'ancom_cached_stats';
 const STORAGE_KEY_DAY = 'ancom_vote_day';
 const COOKIE_KEY_VOTED = 'ancom_voted';
+
+// ---- Exercise ("Hôm nay bạn đã tập thể dục chưa?") — mirrors the rice keys
+// above but kept fully separate, so voting on one question never affects
+// the other's "already voted today" state. ----
+const STORAGE_KEY_EX_VOTE = 'ancom_exercise_choice';
+const STORAGE_KEY_EX_TIME = 'ancom_exercise_time';
+const STORAGE_KEY_EX_STATS = 'ancom_exercise_cached_stats';
+const STORAGE_KEY_EX_DAY = 'ancom_exercise_vote_day';
+const COOKIE_KEY_EX_VOTED = 'ancom_exercise_voted';
+
+export const DEFAULT_EXERCISE_STATS: ExerciseStats = {
+  didCount: 0,
+  notDidCount: 0,
+  totalVotes: 0,
+  percentageDid: 0,
+};
 
 // Shown only until the first real fetch from the backend completes.
 export const DEFAULT_STATS: VoteStats = {
@@ -106,5 +122,64 @@ export const saveCachedStats = (stats: VoteStats): void => {
     localStorage.setItem(STORAGE_KEY_STATS, JSON.stringify(stats));
   } catch (err) {
     console.warn('Failed to save stats to localStorage:', err);
+  }
+};
+
+// ---- Exercise question — same day-boundary pattern as the rice question ----
+
+const clearExerciseVoteCookie = (): void => {
+  document.cookie = `${COOKIE_KEY_EX_VOTED}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=Lax`;
+};
+
+export const ensureExerciseDailyReset = (): void => {
+  const today = getVietnamDateString();
+  const lastDay = localStorage.getItem(STORAGE_KEY_EX_DAY);
+
+  if (lastDay === today) return;
+
+  localStorage.setItem(STORAGE_KEY_EX_DAY, today);
+  localStorage.removeItem(STORAGE_KEY_EX_VOTE);
+  localStorage.removeItem(STORAGE_KEY_EX_TIME);
+  clearExerciseVoteCookie();
+};
+
+export const getStoredExerciseVoteState = (): ExerciseVoteState => {
+  ensureExerciseDailyReset();
+
+  const savedChoice = localStorage.getItem(STORAGE_KEY_EX_VOTE) as ExerciseChoice | null;
+  const savedTime = localStorage.getItem(STORAGE_KEY_EX_TIME);
+  const cookieExists = document.cookie.split(';').some((c) => c.trim().startsWith(`${COOKIE_KEY_EX_VOTED}=`));
+
+  return {
+    hasVoted: Boolean(savedChoice || cookieExists),
+    choice: savedChoice,
+    votedAt: savedTime || undefined,
+  };
+};
+
+export const saveExerciseVoteState = (choice: ExerciseChoice): void => {
+  const now = new Date().toISOString();
+  localStorage.setItem(STORAGE_KEY_EX_VOTE, choice);
+  localStorage.setItem(STORAGE_KEY_EX_TIME, now);
+  document.cookie = `${COOKIE_KEY_EX_VOTED}=${choice}; path=/; SameSite=Lax`;
+};
+
+export const getCachedExerciseStats = (): ExerciseStats => {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_EX_STATS);
+    if (raw) {
+      return JSON.parse(raw);
+    }
+  } catch (err) {
+    console.warn('Failed to parse cached exercise stats:', err);
+  }
+  return DEFAULT_EXERCISE_STATS;
+};
+
+export const saveCachedExerciseStats = (stats: ExerciseStats): void => {
+  try {
+    localStorage.setItem(STORAGE_KEY_EX_STATS, JSON.stringify(stats));
+  } catch (err) {
+    console.warn('Failed to save exercise stats to localStorage:', err);
   }
 };

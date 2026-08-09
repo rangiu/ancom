@@ -28,6 +28,26 @@
     "ratioLabel": "of voters have eaten rice today",
     "updating": "Live updates active"
   },
+  "exercise": {
+    "badge": "Daily Movement",
+    "title": "Have you exercised today?",
+    "subtitle": "Cast your vote below. Each device can vote once per day.",
+    "btnDid": "Done For Today",
+    "btnNotYet": "Not Yet",
+    "alreadyVotedTag": "You have already voted today",
+    "ofTheDay": {
+      "badge": "Today's Exercise Pick",
+      "howTo": "See how to do it"
+    },
+    "stats": {
+      "title": "Today's Movement Stats",
+      "totalVotes": "Total Votes",
+      "didCount": "Exercised",
+      "notDidCount": "Not Yet",
+      "percentageDid": "Exercised Ratio",
+      "ratioLabel": "of voters have exercised today"
+    }
+  },
   "adsense": {
     "sponsored": "Advertisement",
     "placeholder": "Google AdSense Reserved Space"
