@@ -54,6 +54,12 @@
       "ratioLabel": "of voters have exercised today"
     }
   },
+  "share": {
+    "button": "Share",
+    "title": "Share this survey",
+    "copyLink": "Copy link",
+    "copied": "Copied!"
+  },
   "adsense": {
     "sponsored": "Advertisement",
     "placeholder": "Google AdSense Reserved Space"

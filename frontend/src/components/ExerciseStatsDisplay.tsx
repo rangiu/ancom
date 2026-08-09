@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { ExerciseStats, ExerciseChoice } from '../types';
+import { ShareButton } from './ShareButton';
 import { Users, CheckCircle2, XCircle, Activity, LayoutGrid } from 'lucide-react';
 
 interface ExerciseStatsDisplayProps {
@@ -31,9 +32,12 @@ export const ExerciseStatsDisplay: React.FC<ExerciseStatsDisplayProps> = ({ stat
               {t('exercise.stats.title')}
             </h3>
           </div>
-          <div className="flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-xs font-bold tracking-wider">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 live-indicator"></span>
-            <span>{t('stats.live')}</span>
+          <div className="flex items-center gap-2">
+            <div className="flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-xs font-bold tracking-wider">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 live-indicator"></span>
+              <span>{t('stats.live')}</span>
+            </div>
+            <ShareButton title={t('exercise.title')} />
           </div>
         </div>
 

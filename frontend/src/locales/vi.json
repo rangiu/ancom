@@ -54,6 +54,12 @@
       "ratioLabel": "số người bình chọn đã tập thể dục hôm nay"
     }
   },
+  "share": {
+    "button": "Chia sẻ",
+    "title": "Chia sẻ khảo sát",
+    "copyLink": "Sao chép liên kết",
+    "copied": "Đã sao chép!"
+  },
   "adsense": {
     "sponsored": "Quảng cáo",
     "placeholder": "Vị trí dành cho Google AdSense"

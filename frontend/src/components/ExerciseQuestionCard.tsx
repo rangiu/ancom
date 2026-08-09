@@ -5,6 +5,7 @@ import { ExerciseChoice, ExerciseStats } from '../types';
 import { submitExerciseChoice } from '../lib/api';
 import { saveExerciseVoteState } from '../lib/storage';
 import { ExerciseStatsDisplay } from './ExerciseStatsDisplay';
+import { ShareButton } from './ShareButton';
 import { Loader2, Flame } from 'lucide-react';
 
 interface ExerciseQuestionCardProps {
@@ -56,6 +57,8 @@ export const ExerciseQuestionCard: React.FC<ExerciseQuestionCardProps> = ({
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="p-8 sm:p-10 rounded-3xl apple-glass apple-border shadow-appleCard dark:shadow-appleCardDark text-center relative overflow-hidden"
           >
+            <ShareButton title={t('exercise.title')} className="absolute top-5 right-5" />
+
             <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-xs font-semibold mb-6">
               <Flame className="w-3.5 h-3.5" />
               <span>{t('exercise.badge')}</span>

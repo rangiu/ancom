@@ -5,6 +5,7 @@ import { VoteChoice, VoteStats } from '../types';
 import { submitVoteChoice } from '../lib/api';
 import { saveVoteState } from '../lib/storage';
 import { StatsDisplay } from './StatsDisplay';
+import { ShareButton } from './ShareButton';
 import { Loader2, Sparkles } from 'lucide-react';
 
 interface QuestionCardProps {
@@ -54,6 +55,8 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="p-8 sm:p-10 rounded-3xl apple-glass apple-border shadow-appleCard dark:shadow-appleCardDark text-center relative overflow-hidden"
           >
+            <ShareButton title={t('questionCard.title')} className="absolute top-5 right-5" />
+
             {/* Top Badge */}
             <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 text-xs font-semibold mb-6">
               <Sparkles className="w-3.5 h-3.5" />
