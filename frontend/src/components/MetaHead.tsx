@@ -2,13 +2,24 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 
-export const MetaHead: React.FC = () => {
+interface MetaHeadProps {
+  /** Route path e.g. '/privacy'. Omit for the homepage. Drives canonical + OG/Twitter URLs. */
+  path?: string;
+  /** Override the default homepage title (e.g. for Privacy/Terms pages). */
+  titleOverride?: string;
+  /** Override the default homepage description. */
+  descriptionOverride?: string;
+}
+
+export const MetaHead: React.FC<MetaHeadProps> = ({ path = '', titleOverride, descriptionOverride }) => {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language?.startsWith('vi') ? 'vi' : 'en';
 
-  const siteTitle = t('site.title');
-  const siteDescription = t('site.description');
+  const siteTitle = titleOverride ?? t('site.title');
+  const siteDescription = descriptionOverride ?? t('site.description');
   const baseUrl = 'https://ancom-coral.vercel.app/';
+  const pageUrl = path ? `${baseUrl}${path.replace(/^\//, '')}` : baseUrl;
+  const isHome = path === '';
 
   const keywords = currentLang === 'vi'
     ? 'hôm nay bạn đã ăn cơm chưa, ăn cơm, dự án ăn cơm, điểm danh ăn cơm, thống kê ăn cơm, eat rice, have you eaten rice today, hôm nay bạn đã tập thể dục chưa, bài tập thể dục tại nhà, thư viện bài tập'
@@ -64,7 +75,7 @@ export const MetaHead: React.FC = () => {
 
       {/* Open Graph / Facebook */}
       <meta property="og:type" content="website" />
-      <meta property="og:url" content={baseUrl} />
+      <meta property="og:url" content={pageUrl} />
       <meta property="og:title" content={siteTitle} />
       <meta property="og:description" content={siteDescription} />
       <meta property="og:image" content={`${baseUrl}og-image.png`} />
@@ -72,21 +83,23 @@ export const MetaHead: React.FC = () => {
 
       {/* Twitter Card */}
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:url" content={baseUrl} />
+      <meta name="twitter:url" content={pageUrl} />
       <meta name="twitter:title" content={siteTitle} />
       <meta name="twitter:description" content={siteDescription} />
       <meta name="twitter:image" content={`${baseUrl}og-image.png`} />
 
       {/* Canonical and Alternate Language Links */}
-      <link rel="canonical" href={baseUrl} />
-      <link rel="alternate" hrefLang="vi" href={`${baseUrl}?lang=vi`} />
-      <link rel="alternate" hrefLang="en" href={`${baseUrl}?lang=en`} />
-      <link rel="alternate" hrefLang="x-default" href={baseUrl} />
+      <link rel="canonical" href={pageUrl} />
+      <link rel="alternate" hrefLang="vi" href={`${pageUrl}?lang=vi`} />
+      <link rel="alternate" hrefLang="en" href={`${pageUrl}?lang=en`} />
+      <link rel="alternate" hrefLang="x-default" href={pageUrl} />
 
-      {/* JSON-LD Rich Snippet Script */}
-      <script type="application/ld+json">
-        {JSON.stringify(jsonLd)}
-      </script>
+      {/* JSON-LD Rich Snippet Script — only the homepage claims the FAQ schema */}
+      {isHome && (
+        <script type="application/ld+json">
+          {JSON.stringify(jsonLd)}
+        </script>
+      )}
     </Helmet>
   );
 };

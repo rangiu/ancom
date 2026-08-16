@@ -1,11 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
-interface FooterProps {
-  onOpenLegal: (type: 'privacy' | 'terms') => void;
-}
-
-export const Footer: React.FC<FooterProps> = ({ onOpenLegal }) => {
+export const Footer: React.FC = () => {
   const { t } = useTranslation();
 
   return (
@@ -16,23 +13,23 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal }) => {
           {t('footer.copyright')}
         </div>
 
-        {/* Right: Legal links */}
+        {/* Right: Legal links — real routes (/privacy, /terms), not a JS-only modal, so search engines and the AdSense reviewer can actually reach this content. */}
         <div className="flex items-center space-x-6">
-          <button
-            onClick={() => onOpenLegal('privacy')}
+          <Link
+            to="/privacy"
             id="footer-link-privacy"
             className="hover:text-apple-text dark:hover:text-apple-darkText transition-colors underline-offset-4 hover:underline"
           >
             {t('legal.privacyPolicy')}
-          </button>
+          </Link>
           <span className="opacity-30">•</span>
-          <button
-            onClick={() => onOpenLegal('terms')}
+          <Link
+            to="/terms"
             id="footer-link-terms"
             className="hover:text-apple-text dark:hover:text-apple-darkText transition-colors underline-offset-4 hover:underline"
           >
             {t('legal.termsOfService')}
-          </button>
+          </Link>
         </div>
       </div>
     </footer>
