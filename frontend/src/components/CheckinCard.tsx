@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Loader2, Users, CheckCircle2, XCircle, Activity } from 'lucide-react';
-import { CheckinChoice, CheckinStats } from '../types';
+import { Loader2, Users, CheckCircle2, XCircle, Activity, Info } from 'lucide-react';
+import { CheckinChoice, CheckinStats, AdviceType } from '../types';
 import { ShareButton } from './ShareButton';
+import { InfoModal } from './InfoModal';
+import { AiAdvisorModal, AdvisorField } from './AiAdvisorModal';
 
 /** Visual identity for one check-in question — keeps every question looking
  * distinct (own color, own emoji) while sharing one implementation. */
@@ -18,7 +20,10 @@ export interface CheckinTheme {
 }
 
 interface CheckinCardProps {
-  /** i18next namespace holding this question's copy, e.g. 'water' or 'sleep'. */
+  /** i18next namespace holding this question's copy, e.g. 'water' or 'sleep'.
+   * Also drives the info/advisor translation keys by convention:
+   * `${i18nPrefix}.infoBtn`, `.info.title`, `.info.body`, `.advisorBtn`,
+   * `.advisor.title`, `.advisor.subtitle`, `.advisor.submitBtn`. */
   i18nPrefix: string;
   theme: CheckinTheme;
   hasVoted: boolean;
@@ -26,6 +31,11 @@ interface CheckinCardProps {
   stats: CheckinStats;
   onSubmitVote: (choice: CheckinChoice) => Promise<CheckinStats>;
   onVoteSuccess: (newStats: CheckinStats, choice: CheckinChoice) => void;
+  /** POST /api/advice/:type this question's AI advisor calls. */
+  adviceType: AdviceType;
+  /** Field set for that AI advisor's form — differs per question (water asks
+   * age+activity, sleep asks hours+issue). */
+  advisorFields: AdvisorField[];
 }
 
 /**
@@ -43,10 +53,14 @@ export const CheckinCard: React.FC<CheckinCardProps> = ({
   stats,
   onSubmitVote,
   onVoteSuccess,
+  adviceType,
+  advisorFields,
 }) => {
   const { t } = useTranslation();
   const [loadingChoice, setLoadingChoice] = useState<CheckinChoice | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [infoOpen, setInfoOpen] = useState(false);
+  const [advisorOpen, setAdvisorOpen] = useState(false);
 
   const tt = (key: string) => t(`${i18nPrefix}.${key}`);
 
@@ -259,6 +273,42 @@ export const CheckinCard: React.FC<CheckinCardProps> = ({
           </motion.div>
         )}
       </AnimatePresence>
+
+      <div className="flex items-center justify-center flex-wrap gap-2 mt-3">
+        <button
+          onClick={() => setInfoOpen(true)}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 text-xs font-semibold text-apple-secondary hover:text-apple-text dark:hover:text-apple-darkText transition-colors"
+        >
+          <Info className="w-3.5 h-3.5" />
+          {tt('infoBtn')}
+        </button>
+        <button
+          onClick={() => setAdvisorOpen(true)}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-colors ${theme.badgeClass}`}
+        >
+          {theme.badgeIcon}
+          {tt('advisorBtn')}
+        </button>
+      </div>
+
+      <InfoModal
+        isOpen={infoOpen}
+        onClose={() => setInfoOpen(false)}
+        icon={theme.badgeIcon}
+        title={tt('info.title')}
+        body={t(`${i18nPrefix}.info.body`, { returnObjects: true }) as string[]}
+      />
+      <AiAdvisorModal
+        isOpen={advisorOpen}
+        onClose={() => setAdvisorOpen(false)}
+        adviceType={adviceType}
+        icon={theme.badgeIcon}
+        titleKey={`${i18nPrefix}.advisor.title`}
+        subtitleKey={`${i18nPrefix}.advisor.subtitle`}
+        submitLabelKey={`${i18nPrefix}.advisor.submitBtn`}
+        accentGradient={theme.yesGradient}
+        fields={advisorFields}
+      />
     </div>
   );
 };

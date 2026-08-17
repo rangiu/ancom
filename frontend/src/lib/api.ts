@@ -6,7 +6,8 @@ import {
   ApiResponse,
   CheckinChoice,
   CheckinStats,
-  RecipeSuggestionResult,
+  AdviceType,
+  AiAdviceResult,
 } from '../types';
 import {
   getDeviceToken,
@@ -158,26 +159,28 @@ const createCheckinApi = (routeSegment: string, storage: typeof waterStorage) =>
 export const waterApi = createCheckinApi('water', waterStorage);
 export const sleepApi = createCheckinApi('sleep', sleepStorage);
 
-// ---- AI recipe suggestion — nhập nguyên liệu/giá cả, DeepSeek gợi ý món ăn.
-// Rate-limited per device by the backend; remainingToday tells the UI how
-// many more suggestions this device can ask for before the VN-midnight reset. ----
+// ---- AI advice — one call, four domains. Each check-in's "AI advisor"
+// button sends its own field payload (e.g. { ingredients, budget } for rice,
+// { age, activityLevel } for water) to /api/advice/:type. Rate-limited per
+// device by the backend, shared across all 4 types; remainingToday tells the
+// UI how many more calls this device can make before the VN-midnight reset. ----
 
-export const suggestRecipe = async (
-  ingredients: string,
-  budget: string,
+export const getAiAdvice = async (
+  type: AdviceType,
+  fields: Record<string, string>,
   lang: 'vi' | 'en'
-): Promise<RecipeSuggestionResult> => {
+): Promise<AiAdviceResult> => {
   const deviceToken = getDeviceToken();
 
-  const response = await fetch(`${API_BASE_URL}/recipe/suggest`, {
+  const response = await fetch(`${API_BASE_URL}/advice/${type}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ ingredients, budget, deviceToken, lang }),
+    body: JSON.stringify({ ...fields, deviceToken, lang }),
   });
 
-  const data: ApiResponse<RecipeSuggestionResult> = await response.json();
+  const data: ApiResponse<AiAdviceResult> = await response.json();
   if (!response.ok || !data.success || !data.data) {
-    throw new Error(data.error || 'Failed to get a recipe suggestion');
+    throw new Error(data.error || 'Failed to get AI advice');
   }
 
   return data.data;

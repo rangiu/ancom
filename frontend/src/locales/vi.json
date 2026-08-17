@@ -16,7 +16,17 @@
     "thankYou": "Cảm ơn bạn đã phản hồi!",
     "alreadyVotedTag": "Bạn đã hoàn thành bình chọn hôm nay",
     "errorGeneric": "Không thể bình chọn lúc này. Vui lòng thử lại.",
-    "errorSpam": "Bạn đã bình chọn trên thiết bị này rồi."
+    "errorSpam": "Bạn đã bình chọn trên thiết bị này rồi.",
+    "infoBtn": "Thông tin dinh dưỡng",
+    "info": {
+      "title": "Ăn như thế nào là đủ chất?",
+      "body": [
+        "Người trưởng thành cần trung bình 1.800–2.400 kcal/ngày tuỳ giới tính, độ tuổi và mức vận động (nữ khoảng 1.800–2.200 kcal, nam khoảng 2.200–2.800 kcal).",
+        "Một bữa ăn cân đối nên có đủ 4 nhóm: tinh bột (cơm/bún/khoai), đạm (thịt/cá/trứng/đậu), rau xanh và chất béo lành mạnh.",
+        "Nên ăn đủ 3 bữa chính đúng giờ, hạn chế bỏ bữa sáng và ăn quá khuya.",
+        "Đây là thông tin tham khảo chung, không thay thế tư vấn dinh dưỡng cá nhân từ bác sĩ/chuyên gia."
+      ]
+    }
   },
   "stats": {
     "title": "Thống kê thời gian thực hôm nay",
@@ -35,6 +45,31 @@
     "btnDid": "Đã tập rồi",
     "btnNotYet": "Chưa tập",
     "alreadyVotedTag": "Bạn đã hoàn thành bình chọn hôm nay",
+    "infoBtn": "Nên tập lúc nào?",
+    "advisorBtn": "AI gợi ý lịch tập",
+    "info": {
+      "title": "Nên tập thể dục lúc nào?",
+      "body": [
+        "WHO khuyến nghị người trưởng thành nên vận động tối thiểu 150 phút/tuần cường độ vừa (hoặc 75 phút cường độ cao).",
+        "Buổi sáng sớm (sau khi thức dậy 1-2 giờ) giúp tỉnh táo cả ngày; buổi chiều tối (16h-19h) là lúc cơ thể có nhiệt độ và sức mạnh cơ bắp cao nhất, phù hợp tập nặng.",
+        "Tránh tập sát giờ ngủ (trong vòng 1-2 giờ trước khi ngủ) vì có thể gây khó ngủ.",
+        "Nên có ít nhất 1-2 ngày nghỉ/tuần để cơ thể phục hồi."
+      ]
+    },
+    "advisor": {
+      "title": "AI gợi ý lịch tập cho bạn",
+      "subtitle": "Chọn mục tiêu và thời gian rảnh mỗi ngày — AI sẽ gợi ý nên tập gì, lúc nào.",
+      "goalLabel": "Mục tiêu tập luyện",
+      "goalOptions": {
+        "lose_weight": "Giảm cân",
+        "build_muscle": "Tăng cơ",
+        "stay_fit": "Giữ dáng / khoẻ mạnh",
+        "flexibility": "Dẻo dai / thư giãn"
+      },
+      "timeLabel": "Thời gian rảnh mỗi ngày (phút)",
+      "timePlaceholder": "Ví dụ: 30",
+      "submitBtn": "Gợi ý lịch tập"
+    },
     "ofTheDay": {
       "badge": "Gợi ý bài tập hôm nay",
       "howTo": "Xem hướng dẫn"
@@ -96,6 +131,30 @@
     "btnYes": "Đủ nước rồi",
     "btnNotYet": "Chưa đủ",
     "alreadyVotedTag": "Bạn đã hoàn thành bình chọn hôm nay",
+    "infoBtn": "Uống bao nhiêu là đủ?",
+    "advisorBtn": "AI tư vấn lượng nước",
+    "info": {
+      "title": "Uống bao nhiêu nước là đủ?",
+      "body": [
+        "Người trưởng thành: nữ khoảng 2 lít/ngày (~8 cốc 250ml), nam khoảng 2,5–3 lít/ngày.",
+        "Trẻ em 4–8 tuổi: khoảng 1,2 lít/ngày; thanh thiếu niên 9–18 tuổi: khoảng 1,6–1,9 lít/ngày.",
+        "Nên uống rải đều, mỗi lần 150–250ml, cách nhau khoảng 1–2 giờ — đừng đợi khát mới uống.",
+        "Uống nhiều hơn khi vận động mạnh hoặc trời nóng. Thông tin tham khảo chung, tuỳ thể trạng mỗi người có thể khác."
+      ]
+    },
+    "advisor": {
+      "title": "AI tư vấn lượng nước cho bạn",
+      "subtitle": "Nhập độ tuổi và mức độ vận động — AI sẽ gợi ý lượng nước nên uống mỗi ngày.",
+      "ageLabel": "Tuổi của bạn",
+      "agePlaceholder": "Ví dụ: 25",
+      "activityLabel": "Mức độ vận động",
+      "activityOptions": {
+        "low": "Ít vận động",
+        "normal": "Vận động vừa",
+        "high": "Vận động nhiều / ra mồ hôi nhiều"
+      },
+      "submitBtn": "Tư vấn lượng nước"
+    },
     "stats": {
       "title": "Thống kê uống nước hôm nay",
       "percentageYes": "Tỷ lệ đã uống đủ nước",
@@ -112,6 +171,31 @@
     "btnYes": "Đủ giấc rồi",
     "btnNotYet": "Chưa đủ",
     "alreadyVotedTag": "Bạn đã hoàn thành bình chọn hôm nay",
+    "infoBtn": "Ngủ bao nhiêu là đủ?",
+    "advisorBtn": "AI tư vấn giấc ngủ",
+    "info": {
+      "title": "Ngủ bao nhiêu là đủ giấc?",
+      "body": [
+        "Người trưởng thành (18-64 tuổi): 7-9 giờ/đêm. Người lớn tuổi (65+): 7-8 giờ. Thanh thiếu niên: 8-10 giờ.",
+        "Nên đi ngủ và thức dậy vào giờ cố định mỗi ngày, kể cả cuối tuần.",
+        "Tránh dùng điện thoại/máy tính ít nhất 30-60 phút trước khi ngủ.",
+        "Phòng ngủ nên tối, yên tĩnh và mát mẻ (khoảng 25-27°C) để dễ vào giấc hơn."
+      ]
+    },
+    "advisor": {
+      "title": "AI tư vấn giấc ngủ cho bạn",
+      "subtitle": "Cho AI biết tình trạng giấc ngủ hiện tại — AI sẽ gợi ý cách cải thiện.",
+      "hoursLabel": "Số giờ ngủ hiện tại mỗi đêm",
+      "hoursPlaceholder": "Ví dụ: 6",
+      "issueLabel": "Vấn đề đang gặp phải",
+      "issueOptions": {
+        "hard_to_fall_asleep": "Khó vào giấc",
+        "wake_up_early": "Hay thức giấc giữa đêm / dậy sớm",
+        "irregular": "Giờ giấc không đều",
+        "none": "Không vấn đề gì, chỉ muốn tối ưu thêm"
+      },
+      "submitBtn": "Tư vấn giấc ngủ"
+    },
     "stats": {
       "title": "Thống kê giấc ngủ hôm nay",
       "percentageYes": "Tỷ lệ đã ngủ đủ giấc",
@@ -129,12 +213,14 @@
     "ingredientsPlaceholder": "Ví dụ: trứng, cà chua, thịt băm...",
     "budgetLabel": "Ngân sách (không bắt buộc)",
     "budgetPlaceholder": "Ví dụ: 50.000đ",
-    "submitBtn": "Gợi ý món ăn",
-    "loading": "Đang nghĩ món...",
+    "submitBtn": "Gợi ý món ăn"
+  },
+  "advisorCommon": {
+    "loading": "Đang xử lý...",
     "resultTitle": "Gợi ý cho bạn",
-    "remainingToday": "Bạn còn {{count}} lượt gợi ý hôm nay.",
-    "limitReached": "Bạn đã dùng hết lượt gợi ý hôm nay, quay lại vào ngày mai nhé.",
+    "remainingToday": "Bạn còn {{count}} lượt tư vấn AI hôm nay.",
+    "limitReached": "Bạn đã dùng hết lượt tư vấn AI hôm nay, quay lại vào ngày mai nhé.",
     "errorGeneric": "Không thể lấy gợi ý lúc này. Vui lòng thử lại sau.",
-    "disclaimer": "Gợi ý được tạo bởi AI, chỉ mang tính tham khảo."
+    "disclaimer": "Gợi ý được tạo bởi AI, chỉ mang tính tham khảo, không thay thế tư vấn chuyên môn."
   }
 }

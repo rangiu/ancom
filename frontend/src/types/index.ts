@@ -59,9 +59,11 @@ export interface CheckinVoteState {
   votedAt?: string;
 }
 
-// ---- AI recipe suggestion ----
+// ---- AI advice — one shape, four domains (rice, water, exercise, sleep) ----
 
-export interface RecipeSuggestionResult {
+export type AdviceType = 'rice' | 'water' | 'exercise' | 'sleep';
+
+export interface AiAdviceResult {
   suggestion: string;
   remainingToday: number;
 }

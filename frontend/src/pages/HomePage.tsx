@@ -5,7 +5,6 @@ import { ExerciseOfTheDay } from '../components/ExerciseOfTheDay';
 import { ExerciseQuestionCard } from '../components/ExerciseQuestionCard';
 import { ExerciseLibraryModal } from '../components/ExerciseLibraryModal';
 import { CheckinCard, CheckinTheme } from '../components/CheckinCard';
-import { RecipeSuggestor } from '../components/RecipeSuggestor';
 import { AdBanner } from '../components/AdBanner';
 import { MetaHead } from '../components/MetaHead';
 import { VoteStats, VoteChoice, ExerciseStats, ExerciseChoice, CheckinStats, CheckinChoice } from '../types';
@@ -171,6 +170,29 @@ export const HomePage: React.FC = () => {
         stats={waterStats}
         onSubmitVote={waterApi.submitChoice}
         onVoteSuccess={handleWaterVoteSuccess}
+        adviceType="water"
+        advisorFields={[
+          {
+            key: 'age',
+            kind: 'number',
+            labelKey: 'water.advisor.ageLabel',
+            placeholderKey: 'water.advisor.agePlaceholder',
+            maxLength: 10,
+            required: true,
+          },
+          {
+            key: 'activityLevel',
+            kind: 'select',
+            labelKey: 'water.advisor.activityLabel',
+            placeholderKey: 'water.advisor.activityLabel',
+            required: true,
+            options: [
+              { value: 'low', labelKey: 'water.advisor.activityOptions.low' },
+              { value: 'normal', labelKey: 'water.advisor.activityOptions.normal' },
+              { value: 'high', labelKey: 'water.advisor.activityOptions.high' },
+            ],
+          },
+        ]}
       />
       <CheckinCard
         i18nPrefix="sleep"
@@ -180,13 +202,31 @@ export const HomePage: React.FC = () => {
         stats={sleepStats}
         onSubmitVote={sleepApi.submitChoice}
         onVoteSuccess={handleSleepVoteSuccess}
+        adviceType="sleep"
+        advisorFields={[
+          {
+            key: 'currentSleepHours',
+            kind: 'number',
+            labelKey: 'sleep.advisor.hoursLabel',
+            placeholderKey: 'sleep.advisor.hoursPlaceholder',
+            maxLength: 10,
+            required: true,
+          },
+          {
+            key: 'issue',
+            kind: 'select',
+            labelKey: 'sleep.advisor.issueLabel',
+            placeholderKey: 'sleep.advisor.issueLabel',
+            required: true,
+            options: [
+              { value: 'hard_to_fall_asleep', labelKey: 'sleep.advisor.issueOptions.hard_to_fall_asleep' },
+              { value: 'wake_up_early', labelKey: 'sleep.advisor.issueOptions.wake_up_early' },
+              { value: 'irregular', labelKey: 'sleep.advisor.issueOptions.irregular' },
+              { value: 'none', labelKey: 'sleep.advisor.issueOptions.none' },
+            ],
+          },
+        ]}
       />
-
-      {/* Middle AdSense Banner */}
-      <AdBanner position="middle" slotId="1000000003" />
-
-      {/* AI Recipe Suggestor */}
-      <RecipeSuggestor />
 
       {/* Bottom AdSense Banner */}
       <AdBanner position="bottom" slotId="1000000002" />

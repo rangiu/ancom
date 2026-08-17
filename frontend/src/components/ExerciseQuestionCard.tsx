@@ -6,7 +6,9 @@ import { submitExerciseChoice } from '../lib/api';
 import { saveExerciseVoteState } from '../lib/storage';
 import { ExerciseStatsDisplay } from './ExerciseStatsDisplay';
 import { ShareButton } from './ShareButton';
-import { Loader2, Flame } from 'lucide-react';
+import { InfoModal } from './InfoModal';
+import { AiAdvisorModal } from './AiAdvisorModal';
+import { Loader2, Flame, Info, Sparkles } from 'lucide-react';
 
 interface ExerciseQuestionCardProps {
   hasVoted: boolean;
@@ -26,6 +28,8 @@ export const ExerciseQuestionCard: React.FC<ExerciseQuestionCardProps> = ({
   const { t } = useTranslation();
   const [loadingChoice, setLoadingChoice] = useState<ExerciseChoice | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [infoOpen, setInfoOpen] = useState(false);
+  const [advisorOpen, setAdvisorOpen] = useState(false);
 
   const handleVote = async (choice: ExerciseChoice) => {
     if (hasVoted || loadingChoice) return;
@@ -125,6 +129,64 @@ export const ExerciseQuestionCard: React.FC<ExerciseQuestionCardProps> = ({
           />
         )}
       </AnimatePresence>
+
+      <div className="flex items-center justify-center flex-wrap gap-2 mt-3">
+        <button
+          onClick={() => setInfoOpen(true)}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 text-xs font-semibold text-apple-secondary hover:text-apple-text dark:hover:text-apple-darkText transition-colors"
+        >
+          <Info className="w-3.5 h-3.5" />
+          {t('exercise.infoBtn')}
+        </button>
+        <button
+          onClick={() => setAdvisorOpen(true)}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 text-xs font-semibold text-emerald-600 dark:text-emerald-400 transition-colors"
+        >
+          <Sparkles className="w-3.5 h-3.5" />
+          {t('exercise.advisorBtn')}
+        </button>
+      </div>
+
+      <InfoModal
+        isOpen={infoOpen}
+        onClose={() => setInfoOpen(false)}
+        icon={<Info className="w-5 h-5 text-apple-accent" />}
+        title={t('exercise.info.title')}
+        body={t('exercise.info.body', { returnObjects: true }) as string[]}
+      />
+      <AiAdvisorModal
+        isOpen={advisorOpen}
+        onClose={() => setAdvisorOpen(false)}
+        adviceType="exercise"
+        icon={<Sparkles className="w-5 h-5 text-emerald-500" />}
+        titleKey="exercise.advisor.title"
+        subtitleKey="exercise.advisor.subtitle"
+        submitLabelKey="exercise.advisor.submitBtn"
+        accentGradient="from-emerald-400 to-teal-500"
+        fields={[
+          {
+            key: 'goal',
+            kind: 'select',
+            labelKey: 'exercise.advisor.goalLabel',
+            placeholderKey: 'exercise.advisor.goalLabel',
+            required: true,
+            options: [
+              { value: 'lose_weight', labelKey: 'exercise.advisor.goalOptions.lose_weight' },
+              { value: 'build_muscle', labelKey: 'exercise.advisor.goalOptions.build_muscle' },
+              { value: 'stay_fit', labelKey: 'exercise.advisor.goalOptions.stay_fit' },
+              { value: 'flexibility', labelKey: 'exercise.advisor.goalOptions.flexibility' },
+            ],
+          },
+          {
+            key: 'availableTime',
+            kind: 'number',
+            labelKey: 'exercise.advisor.timeLabel',
+            placeholderKey: 'exercise.advisor.timePlaceholder',
+            maxLength: 10,
+            required: true,
+          },
+        ]}
+      />
     </div>
   );
 };

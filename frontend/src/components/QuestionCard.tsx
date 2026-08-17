@@ -6,7 +6,9 @@ import { submitVoteChoice } from '../lib/api';
 import { saveVoteState } from '../lib/storage';
 import { StatsDisplay } from './StatsDisplay';
 import { ShareButton } from './ShareButton';
-import { Loader2, Sparkles } from 'lucide-react';
+import { InfoModal } from './InfoModal';
+import { AiAdvisorModal } from './AiAdvisorModal';
+import { Loader2, Sparkles, Info, ChefHat } from 'lucide-react';
 
 interface QuestionCardProps {
   hasVoted: boolean;
@@ -24,6 +26,8 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   const { t } = useTranslation();
   const [loadingChoice, setLoadingChoice] = useState<VoteChoice | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [infoOpen, setInfoOpen] = useState(false);
+  const [advisorOpen, setAdvisorOpen] = useState(false);
 
   const handleVote = async (choice: VoteChoice) => {
     if (hasVoted || loadingChoice) return;
@@ -129,6 +133,59 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
           <StatsDisplay key="stats-card" stats={stats} userChoice={userChoice} />
         )}
       </AnimatePresence>
+
+      {/* Utility row: static info + AI advisor — visible regardless of vote state */}
+      <div className="flex items-center justify-center flex-wrap gap-2 mt-3">
+        <button
+          onClick={() => setInfoOpen(true)}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 text-xs font-semibold text-apple-secondary hover:text-apple-text dark:hover:text-apple-darkText transition-colors"
+        >
+          <Info className="w-3.5 h-3.5" />
+          {t('questionCard.infoBtn')}
+        </button>
+        <button
+          onClick={() => setAdvisorOpen(true)}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-orange-500/10 hover:bg-orange-500/20 text-xs font-semibold text-orange-600 dark:text-orange-400 transition-colors"
+        >
+          <ChefHat className="w-3.5 h-3.5" />
+          {t('recipe.badge')}
+        </button>
+      </div>
+
+      <InfoModal
+        isOpen={infoOpen}
+        onClose={() => setInfoOpen(false)}
+        icon={<Info className="w-5 h-5 text-apple-accent" />}
+        title={t('questionCard.info.title')}
+        body={t('questionCard.info.body', { returnObjects: true }) as string[]}
+      />
+      <AiAdvisorModal
+        isOpen={advisorOpen}
+        onClose={() => setAdvisorOpen(false)}
+        adviceType="rice"
+        icon={<ChefHat className="w-5 h-5 text-orange-500" />}
+        titleKey="recipe.title"
+        subtitleKey="recipe.subtitle"
+        submitLabelKey="recipe.submitBtn"
+        accentGradient="from-orange-400 to-amber-500"
+        fields={[
+          {
+            key: 'ingredients',
+            kind: 'textarea',
+            labelKey: 'recipe.ingredientsLabel',
+            placeholderKey: 'recipe.ingredientsPlaceholder',
+            maxLength: 300,
+            required: true,
+          },
+          {
+            key: 'budget',
+            kind: 'text',
+            labelKey: 'recipe.budgetLabel',
+            placeholderKey: 'recipe.budgetPlaceholder',
+            maxLength: 50,
+          },
+        ]}
+      />
     </div>
   );
 };
