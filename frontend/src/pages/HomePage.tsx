@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { Droplet, Moon } from 'lucide-react';
 import { QuestionCard } from '../components/QuestionCard';
 import { ExerciseOfTheDay } from '../components/ExerciseOfTheDay';
 import { ExerciseQuestionCard } from '../components/ExerciseQuestionCard';
 import { ExerciseLibraryModal } from '../components/ExerciseLibraryModal';
+import { CheckinCard, CheckinTheme } from '../components/CheckinCard';
+import { RecipeSuggestor } from '../components/RecipeSuggestor';
 import { AdBanner } from '../components/AdBanner';
 import { MetaHead } from '../components/MetaHead';
-import { VoteStats, VoteChoice, ExerciseStats, ExerciseChoice } from '../types';
-import { fetchVoteStats, fetchExerciseStats } from '../lib/api';
+import { VoteStats, VoteChoice, ExerciseStats, ExerciseChoice, CheckinStats, CheckinChoice } from '../types';
+import { fetchVoteStats, fetchExerciseStats, waterApi, sleepApi } from '../lib/api';
 import {
   getStoredVoteState,
   getCachedStats,
@@ -14,7 +17,29 @@ import {
   getStoredExerciseVoteState,
   getCachedExerciseStats,
   saveCachedExerciseStats,
+  waterStorage,
+  sleepStorage,
 } from '../lib/storage';
+
+const WATER_THEME: CheckinTheme = {
+  badgeIcon: <Droplet className="w-3.5 h-3.5" />,
+  badgeClass: 'bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/20',
+  titleEmoji: '💧',
+  yesEmoji: '💧',
+  noEmoji: '🥵',
+  yesGradient: 'from-sky-400 to-blue-500',
+  noGradient: 'from-amber-400 to-orange-500',
+};
+
+const SLEEP_THEME: CheckinTheme = {
+  badgeIcon: <Moon className="w-3.5 h-3.5" />,
+  badgeClass: 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20',
+  titleEmoji: '😴',
+  yesEmoji: '😴',
+  noEmoji: '🥱',
+  yesGradient: 'from-indigo-400 to-violet-500',
+  noGradient: 'from-slate-400 to-slate-500',
+};
 
 export const HomePage: React.FC = () => {
   // Vote state from storage
@@ -27,6 +52,12 @@ export const HomePage: React.FC = () => {
   const [exerciseVote, setExerciseVote] = useState(() => getStoredExerciseVoteState());
   const [exerciseStats, setExerciseStats] = useState<ExerciseStats>(() => getCachedExerciseStats());
 
+  // Water & Sleep check-ins — same independent-per-question pattern as above.
+  const [waterVote, setWaterVote] = useState(() => waterStorage.getStoredVoteState());
+  const [waterStats, setWaterStats] = useState<CheckinStats>(() => waterStorage.getCachedStats());
+  const [sleepVote, setSleepVote] = useState(() => sleepStorage.getStoredVoteState());
+  const [sleepStats, setSleepStats] = useState<CheckinStats>(() => sleepStorage.getCachedStats());
+
   // Exercise Library Modal State
   const [isLibraryOpen, setIsLibraryOpen] = useState(false);
 
@@ -38,16 +69,25 @@ export const HomePage: React.FC = () => {
     let isMounted = true;
 
     const loadStats = async () => {
-      const [freshStats, freshExerciseStats] = await Promise.all([fetchVoteStats(), fetchExerciseStats()]);
+      const [freshStats, freshExerciseStats, freshWaterStats, freshSleepStats] = await Promise.all([
+        fetchVoteStats(),
+        fetchExerciseStats(),
+        waterApi.fetchStats(),
+        sleepApi.fetchStats(),
+      ]);
       if (isMounted) {
         setStats(freshStats);
         setExerciseStats(freshExerciseStats);
+        setWaterStats(freshWaterStats);
+        setSleepStats(freshSleepStats);
       }
     };
 
     const refreshVoteState = () => {
       setUserVote(getStoredVoteState());
       setExerciseVote(getStoredExerciseVoteState());
+      setWaterVote(waterStorage.getStoredVoteState());
+      setSleepVote(sleepStorage.getStoredVoteState());
     };
 
     loadStats();
@@ -85,6 +125,18 @@ export const HomePage: React.FC = () => {
     });
   };
 
+  const handleWaterVoteSuccess = (newStats: CheckinStats, choice: CheckinChoice) => {
+    setWaterStats(newStats);
+    waterStorage.saveVoteState(choice);
+    setWaterVote({ hasVoted: true, choice, votedAt: new Date().toISOString() });
+  };
+
+  const handleSleepVoteSuccess = (newStats: CheckinStats, choice: CheckinChoice) => {
+    setSleepStats(newStats);
+    sleepStorage.saveVoteState(choice);
+    setSleepVote({ hasVoted: true, choice, votedAt: new Date().toISOString() });
+  };
+
   return (
     <>
       <MetaHead />
@@ -109,6 +161,32 @@ export const HomePage: React.FC = () => {
         onVoteSuccess={handleExerciseVoteSuccess}
         onOpenLibrary={() => setIsLibraryOpen(true)}
       />
+
+      {/* Water & Sleep Check-ins */}
+      <CheckinCard
+        i18nPrefix="water"
+        theme={WATER_THEME}
+        hasVoted={waterVote.hasVoted}
+        userChoice={waterVote.choice}
+        stats={waterStats}
+        onSubmitVote={waterApi.submitChoice}
+        onVoteSuccess={handleWaterVoteSuccess}
+      />
+      <CheckinCard
+        i18nPrefix="sleep"
+        theme={SLEEP_THEME}
+        hasVoted={sleepVote.hasVoted}
+        userChoice={sleepVote.choice}
+        stats={sleepStats}
+        onSubmitVote={sleepApi.submitChoice}
+        onVoteSuccess={handleSleepVoteSuccess}
+      />
+
+      {/* Middle AdSense Banner */}
+      <AdBanner position="middle" slotId="1000000003" />
+
+      {/* AI Recipe Suggestor */}
+      <RecipeSuggestor />
 
       {/* Bottom AdSense Banner */}
       <AdBanner position="bottom" slotId="1000000002" />

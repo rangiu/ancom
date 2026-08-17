@@ -10,6 +10,9 @@ services:
     environment:
       - PORT=4000
       - ALLOWED_ORIGINS=https://ancom-coral.vercel.app,http://localhost:5173
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY:-}
+      - RECIPE_DAILY_LIMIT_PER_DEVICE=${RECIPE_DAILY_LIMIT_PER_DEVICE:-5}
+      - RECIPE_DAILY_GLOBAL_LIMIT=${RECIPE_DAILY_GLOBAL_LIMIT:-300}
 
 volumes:
   ancom_data:

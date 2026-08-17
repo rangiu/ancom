@@ -82,5 +82,14 @@ Repo được kết nối Git với Vercel — mỗi lần push lên nhánh `mai
 
 ### Backend -> VPS riêng (Docker + Cloudflare Tunnel)
 1. Copy thư mục `backend/` lên server.
-2. `docker compose -p ancom-backend up -d --build`
-3. Thêm 1 **Public Hostname** trong Cloudflare Zero Trust Tunnel dashboard trỏ `ancom-api.sumflow.online` -> `http://localhost:4000` (không cần mở port nào trên server).
+2. (Tuỳ chọn) Tạo file `backend/.env` từ [`backend/.env.example`](backend/.env.example) để bật tính năng AI gợi ý món ăn — cần `DEEPSEEK_API_KEY`.
+3. `docker compose -p ancom-backend up -d --build`
+4. Thêm 1 **Public Hostname** trong Cloudflare Zero Trust Tunnel dashboard trỏ `ancom-api.sumflow.online` -> `http://localhost:4000` (không cần mở port nào trên server).
+
+---
+
+## 🍽️ Điểm danh sức khoẻ & AI gợi ý món ăn
+
+Ngoài câu hỏi "Đã ăn cơm chưa?" và "Đã tập thể dục chưa?", site còn có:
+- **Đã uống đủ nước chưa?** / **Đã ngủ đủ giấc chưa?** — 2 câu điểm danh cùng cơ chế (1 lượt/thiết bị/ngày, reset 00:00 giờ VN), dùng chung 1 hệ thống backend tổng quát (`CHECKINS` trong [`backend/server.js`](backend/server.js)) và 1 component frontend tổng quát ([`CheckinCard.tsx`](frontend/src/components/CheckinCard.tsx)) thay vì copy riêng từng câu.
+- **AI gợi ý món ăn** (`POST /api/recipe/suggest`) — người dùng nhập nguyên liệu hiện có + ngân sách, gọi DeepSeek API để gợi ý món. Giới hạn 5 lượt/thiết bị/ngày và một trần tổng site-wide (mặc định 300/ngày) để kiểm soát chi phí; tắt hoàn toàn (trả về 503) nếu chưa cấu hình `DEEPSEEK_API_KEY`.

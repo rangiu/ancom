@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 interface AdBannerProps {
   slotId?: string;
-  position: 'top' | 'bottom';
+  position: 'top' | 'middle' | 'bottom';
 }
 
 export const AdBanner: React.FC<AdBannerProps> = ({ slotId = '1234567890', position }) => {

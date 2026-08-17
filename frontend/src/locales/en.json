@@ -88,5 +88,53 @@
   "footer": {
     "copyright": "© 2026 Eat Rice Project. Built with love, React & Express.",
     "rights": "All rights reserved."
+  },
+  "water": {
+    "badge": "Daily Wellness Check-in",
+    "title": "Have you drunk enough water today?",
+    "subtitle": "Cast your vote below. Each device can vote once per day.",
+    "btnYes": "Hydrated!",
+    "btnNotYet": "Not yet",
+    "alreadyVotedTag": "You have already voted today",
+    "stats": {
+      "title": "Today's Hydration Stats",
+      "percentageYes": "Hydrated Ratio",
+      "ratioLabel": "of voters have drunk enough water today",
+      "yesCount": "Hydrated",
+      "noCount": "Not Yet",
+      "totalVotes": "Total Votes"
+    }
+  },
+  "sleep": {
+    "badge": "Daily Wellness Check-in",
+    "title": "Did you get enough sleep last night?",
+    "subtitle": "Cast your vote below. Each device can vote once per day.",
+    "btnYes": "Well rested!",
+    "btnNotYet": "Not yet",
+    "alreadyVotedTag": "You have already voted today",
+    "stats": {
+      "title": "Today's Sleep Stats",
+      "percentageYes": "Well-rested Ratio",
+      "ratioLabel": "of voters got enough sleep",
+      "yesCount": "Well Rested",
+      "noCount": "Not Yet",
+      "totalVotes": "Total Votes"
+    }
+  },
+  "recipe": {
+    "badge": "AI Recipe Suggestion",
+    "title": "What should I eat today?",
+    "subtitle": "Enter the ingredients you have and your budget (optional) — AI will suggest a dish for you.",
+    "ingredientsLabel": "Ingredients you have",
+    "ingredientsPlaceholder": "e.g. eggs, tomatoes, ground pork...",
+    "budgetLabel": "Budget (optional)",
+    "budgetPlaceholder": "e.g. $2",
+    "submitBtn": "Suggest a dish",
+    "loading": "Thinking of a dish...",
+    "resultTitle": "Suggestion for you",
+    "remainingToday": "You have {{count}} suggestion(s) left today.",
+    "limitReached": "You've used all your suggestions for today, come back tomorrow.",
+    "errorGeneric": "Unable to get a suggestion right now. Please try again later.",
+    "disclaimer": "This suggestion is AI-generated and for reference only."
   }
 }

@@ -88,5 +88,53 @@
   "footer": {
     "copyright": "© 2026 Dự án Ăn Cơm. Được xây dựng với React & Express.",
     "rights": "Bảo lưu mọi quyền."
+  },
+  "water": {
+    "badge": "Điểm danh sức khoẻ",
+    "title": "Hôm nay bạn đã uống đủ nước chưa?",
+    "subtitle": "Chọn câu trả lời của bạn bên dưới. Mỗi thiết bị chỉ được bình chọn một lần.",
+    "btnYes": "Đủ nước rồi",
+    "btnNotYet": "Chưa đủ",
+    "alreadyVotedTag": "Bạn đã hoàn thành bình chọn hôm nay",
+    "stats": {
+      "title": "Thống kê uống nước hôm nay",
+      "percentageYes": "Tỷ lệ đã uống đủ nước",
+      "ratioLabel": "số người bình chọn đã uống đủ nước hôm nay",
+      "yesCount": "Đủ nước",
+      "noCount": "Chưa đủ",
+      "totalVotes": "Tổng lượt bình chọn"
+    }
+  },
+  "sleep": {
+    "badge": "Điểm danh sức khoẻ",
+    "title": "Hôm qua bạn đã ngủ đủ giấc chưa?",
+    "subtitle": "Chọn câu trả lời của bạn bên dưới. Mỗi thiết bị chỉ được bình chọn một lần.",
+    "btnYes": "Đủ giấc rồi",
+    "btnNotYet": "Chưa đủ",
+    "alreadyVotedTag": "Bạn đã hoàn thành bình chọn hôm nay",
+    "stats": {
+      "title": "Thống kê giấc ngủ hôm nay",
+      "percentageYes": "Tỷ lệ đã ngủ đủ giấc",
+      "ratioLabel": "số người bình chọn đã ngủ đủ giấc",
+      "yesCount": "Đủ giấc",
+      "noCount": "Chưa đủ",
+      "totalVotes": "Tổng lượt bình chọn"
+    }
+  },
+  "recipe": {
+    "badge": "AI Gợi Ý Món Ăn",
+    "title": "Hôm nay ăn gì?",
+    "subtitle": "Nhập nguyên liệu bạn đang có và ngân sách (nếu có) — AI sẽ gợi ý món ăn phù hợp.",
+    "ingredientsLabel": "Nguyên liệu hiện có",
+    "ingredientsPlaceholder": "Ví dụ: trứng, cà chua, thịt băm...",
+    "budgetLabel": "Ngân sách (không bắt buộc)",
+    "budgetPlaceholder": "Ví dụ: 50.000đ",
+    "submitBtn": "Gợi ý món ăn",
+    "loading": "Đang nghĩ món...",
+    "resultTitle": "Gợi ý cho bạn",
+    "remainingToday": "Bạn còn {{count}} lượt gợi ý hôm nay.",
+    "limitReached": "Bạn đã dùng hết lượt gợi ý hôm nay, quay lại vào ngày mai nhé.",
+    "errorGeneric": "Không thể lấy gợi ý lúc này. Vui lòng thử lại sau.",
+    "disclaimer": "Gợi ý được tạo bởi AI, chỉ mang tính tham khảo."
   }
 }

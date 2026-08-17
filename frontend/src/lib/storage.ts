@@ -1,4 +1,14 @@
-import { VoteChoice, UserVoteState, VoteStats, ExerciseChoice, ExerciseVoteState, ExerciseStats } from '../types';
+import {
+  VoteChoice,
+  UserVoteState,
+  VoteStats,
+  ExerciseChoice,
+  ExerciseVoteState,
+  ExerciseStats,
+  CheckinChoice,
+  CheckinStats,
+  CheckinVoteState,
+} from '../types';
 
 const STORAGE_KEY_VOTE = 'ancom_vote_choice';
 const STORAGE_KEY_TIME = 'ancom_vote_time';
@@ -183,3 +193,80 @@ export const saveCachedExerciseStats = (stats: ExerciseStats): void => {
     console.warn('Failed to save exercise stats to localStorage:', err);
   }
 };
+
+// ---- Generic wellness check-in storage (Water, Sleep, ...) ----
+// Rice and Exercise above are hand-written because each grew its own
+// bespoke stats shape over time. Any *new* daily yes/no check-in shares one
+// generic shape, so it gets a factory instead of another hand-copied block.
+
+export const DEFAULT_CHECKIN_STATS: CheckinStats = {
+  yesCount: 0,
+  noCount: 0,
+  totalVotes: 0,
+  percentageYes: 0,
+};
+
+export const createCheckinStorage = (prefix: string) => {
+  const KEY_VOTE = `ancom_${prefix}_choice`;
+  const KEY_TIME = `ancom_${prefix}_time`;
+  const KEY_STATS = `ancom_${prefix}_cached_stats`;
+  const KEY_DAY = `ancom_${prefix}_vote_day`;
+  const COOKIE_VOTED = `ancom_${prefix}_voted`;
+
+  const clearCookie = (): void => {
+    document.cookie = `${COOKIE_VOTED}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=Lax`;
+  };
+
+  const ensureDailyResetFor = (): void => {
+    const today = getVietnamDateString();
+    const lastDay = localStorage.getItem(KEY_DAY);
+    if (lastDay === today) return;
+
+    localStorage.setItem(KEY_DAY, today);
+    localStorage.removeItem(KEY_VOTE);
+    localStorage.removeItem(KEY_TIME);
+    clearCookie();
+  };
+
+  const getStoredVoteState = (): CheckinVoteState => {
+    ensureDailyResetFor();
+    const savedChoice = localStorage.getItem(KEY_VOTE) as CheckinChoice | null;
+    const savedTime = localStorage.getItem(KEY_TIME);
+    const cookieExists = document.cookie.split(';').some((c) => c.trim().startsWith(`${COOKIE_VOTED}=`));
+    return {
+      hasVoted: Boolean(savedChoice || cookieExists),
+      choice: savedChoice,
+      votedAt: savedTime || undefined,
+    };
+  };
+
+  const saveVoteState = (choice: CheckinChoice): void => {
+    const now = new Date().toISOString();
+    localStorage.setItem(KEY_VOTE, choice);
+    localStorage.setItem(KEY_TIME, now);
+    document.cookie = `${COOKIE_VOTED}=${choice}; path=/; SameSite=Lax`;
+  };
+
+  const getCachedStats = (): CheckinStats => {
+    try {
+      const raw = localStorage.getItem(KEY_STATS);
+      if (raw) return JSON.parse(raw);
+    } catch (err) {
+      console.warn(`Failed to parse cached ${prefix} stats:`, err);
+    }
+    return DEFAULT_CHECKIN_STATS;
+  };
+
+  const saveCachedStats = (stats: CheckinStats): void => {
+    try {
+      localStorage.setItem(KEY_STATS, JSON.stringify(stats));
+    } catch (err) {
+      console.warn(`Failed to save ${prefix} stats to localStorage:`, err);
+    }
+  };
+
+  return { getStoredVoteState, saveVoteState, getCachedStats, saveCachedStats };
+};
+
+export const waterStorage = createCheckinStorage('water');
+export const sleepStorage = createCheckinStorage('sleep');

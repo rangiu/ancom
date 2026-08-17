@@ -38,3 +38,30 @@ export interface ExerciseVoteState {
   choice: ExerciseChoice | null;
   votedAt?: string;
 }
+
+// ---- Generic daily wellness check-in (Water, Sleep, ...) ----
+// Same "vote once per Vietnam-local day" shape as rice/exercise above, just
+// with a shared generic schema instead of a bespoke one per question.
+
+export type CheckinChoice = 'yes' | 'not_yet';
+
+export interface CheckinStats {
+  yesCount: number;
+  noCount: number;
+  totalVotes: number;
+  percentageYes: number;
+  lastUpdated?: string;
+}
+
+export interface CheckinVoteState {
+  hasVoted: boolean;
+  choice: CheckinChoice | null;
+  votedAt?: string;
+}
+
+// ---- AI recipe suggestion ----
+
+export interface RecipeSuggestionResult {
+  suggestion: string;
+  remainingToday: number;
+}
