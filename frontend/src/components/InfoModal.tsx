@@ -1,23 +1,36 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X } from 'lucide-react';
+import { X, ExternalLink } from 'lucide-react';
+
+export interface InfoSection {
+  heading?: string;
+  items: string[];
+}
+
+export interface InfoSource {
+  label: string;
+  url: string;
+}
 
 interface InfoModalProps {
   isOpen: boolean;
   onClose: () => void;
   icon: React.ReactNode;
   title: string;
-  /** Each entry renders as its own paragraph. */
-  body: string[];
+  sections: InfoSection[];
+  /** Credible sources this content is based on (WHO, CDC, NASEM, ...), shown as links. */
+  sources?: InfoSource[];
 }
 
 /**
  * Generic "Thông tin hữu ích" modal — static reference content (nutrition,
  * hydration, exercise timing, sleep guidelines), no AI call, no cost. Shared
- * by all four check-ins; only the icon/title/body differ per question.
+ * by all four check-ins; only the icon/title/sections/sources differ per
+ * question. Organized into headed sections (rather than one flat paragraph
+ * list) so longer, source-backed content stays scannable.
  */
-export const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, icon, title, body }) => {
+export const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, icon, title, sections, sources }) => {
   const { t } = useTranslation();
 
   return (
@@ -44,10 +57,46 @@ export const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose, icon, tit
               </button>
             </div>
 
-            <div className="p-6 overflow-y-auto space-y-3 text-sm leading-relaxed text-apple-text/90 dark:text-apple-darkText/90">
-              {body.map((paragraph, i) => (
-                <p key={i}>{paragraph}</p>
+            <div className="p-6 overflow-y-auto space-y-5 text-sm leading-relaxed text-apple-text/90 dark:text-apple-darkText/90">
+              {sections.map((section, i) => (
+                <div key={i}>
+                  {section.heading && (
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-apple-accent mb-2">
+                      {section.heading}
+                    </h3>
+                  )}
+                  <ul className="space-y-1.5 list-disc list-outside pl-4 marker:text-apple-secondary/50">
+                    {section.items.map((item, j) => (
+                      <li key={j}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
               ))}
+
+              {sources && sources.length > 0 && (
+                <div className="pt-3 border-t border-black/5 dark:border-white/10">
+                  <h3 className="text-[11px] font-bold uppercase tracking-wider text-apple-secondary mb-2">
+                    {t('infoCommon.sourcesLabel')}
+                  </h3>
+                  <ul className="space-y-1">
+                    {sources.map((src, i) => (
+                      <li key={i}>
+                        <a
+                          href={src.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-xs text-apple-accent hover:underline underline-offset-2"
+                        >
+                          {src.label}
+                          <ExternalLink className="w-3 h-3" />
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              <p className="text-[11px] text-apple-secondary/70">{t('infoCommon.disclaimer')}</p>
             </div>
 
             <div className="px-6 py-4 border-t border-black/5 dark:border-white/10 flex justify-end bg-black/5 dark:bg-white/5">

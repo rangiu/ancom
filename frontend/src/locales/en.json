@@ -20,11 +20,34 @@
     "infoBtn": "Nutrition info",
     "info": {
       "title": "How much should you eat for balanced nutrition?",
-      "body": [
-        "Adults need on average 1,800–2,400 kcal/day depending on sex, age and activity level (roughly 1,800–2,200 kcal for women, 2,200–2,800 kcal for men).",
-        "A balanced meal should cover 4 groups: carbs (rice/noodles/potatoes), protein (meat/fish/eggs/beans), vegetables, and healthy fats.",
-        "Aim for 3 regular meals at consistent times — try not to skip breakfast or eat too late at night.",
-        "This is general reference information, not a substitute for personal nutrition advice from a doctor or dietitian."
+      "sections": [
+        {
+          "heading": "Daily energy needs",
+          "items": [
+            "Energy need = Basal Metabolic Rate (BMR) × activity factor: sedentary ×1.2, light activity (1-3 sessions/week) ×1.375, moderate (3-5 sessions/week) ×1.55, heavy (6-7 sessions/week) ×1.725.",
+            "General estimate for adults: roughly 1,800–2,200 kcal/day for women, 2,200–2,800 kcal/day for men, depending on actual activity level."
+          ]
+        },
+        {
+          "heading": "4 food groups every meal needs",
+          "items": [
+            "Carbs: rice, noodles, potatoes, whole grains.",
+            "Protein: meat, fish, eggs, beans, dairy.",
+            "Vegetables & fruit: vitamins, minerals, and fiber.",
+            "Healthy fats: vegetable oils, fatty fish (salmon, mackerel), nuts."
+          ]
+        },
+        {
+          "heading": "Good meal timing",
+          "items": [
+            "Eat 3 regular meals at consistent times — don't skip breakfast.",
+            "Finish dinner at least 2-3 hours before bedtime to give digestion time to wind down."
+          ]
+        }
+      ],
+      "sources": [
+        { "label": "National Institute of Nutrition Vietnam — Recommended Dietary Allowances", "url": "https://viendinhduongtphcm.org/vi/dinh-duong-co-ban/nhu-cau-dinh-duong-khuyen-nghi.html" },
+        { "label": "WHO — Healthy Diet Fact Sheet", "url": "https://www.who.int/news-room/fact-sheets/detail/healthy-diet" }
       ]
     }
   },
@@ -49,11 +72,33 @@
     "advisorBtn": "AI workout plan",
     "info": {
       "title": "When is the best time to exercise?",
-      "body": [
-        "WHO recommends adults get at least 150 minutes/week of moderate activity (or 75 minutes of vigorous activity).",
-        "Early morning (1-2 hours after waking) helps you stay alert all day; late afternoon (4-7 PM) is when body temperature and muscle strength peak — good for heavier training.",
-        "Avoid training close to bedtime (within 1-2 hours) as it can make it harder to fall asleep.",
-        "Aim for at least 1-2 rest days per week so your body can recover."
+      "sections": [
+        {
+          "heading": "Activity guidelines (WHO 2020)",
+          "items": [
+            "Adults: 150–300 minutes/week of moderate activity, or 75–150 minutes of vigorous activity, or an equivalent combination.",
+            "Add muscle-strengthening exercises (weights, push-ups, squats...) for all major muscle groups, at least 2 days/week.",
+            "Going beyond the minimum (up to 300-750 minutes/week moderate) provides additional health benefits."
+          ]
+        },
+        {
+          "heading": "Best time to train",
+          "items": [
+            "Early morning (1-2 hours after waking): helps you stay alert and focused all day.",
+            "Late afternoon (4-7 PM): body temperature and muscle strength peak — good for heavier training.",
+            "Avoid vigorous training close to bedtime (within 1-2 hours) as it can make it harder to fall asleep."
+          ]
+        },
+        {
+          "heading": "Recovery",
+          "items": [
+            "Aim for at least 1-2 rest days per week so muscles and joints can recover and reduce injury risk."
+          ]
+        }
+      ],
+      "sources": [
+        { "label": "WHO — Guidelines on Physical Activity and Sedentary Behaviour (2020)", "url": "https://www.who.int/publications/i/item/9789240015128" },
+        { "label": "CDC — Physical Activity Basics for Adults", "url": "https://www.cdc.gov/physical-activity-basics/guidelines/adults.html" }
       ]
     },
     "advisor": {
@@ -135,11 +180,33 @@
     "advisorBtn": "AI hydration advice",
     "info": {
       "title": "How much water is enough?",
-      "body": [
-        "Adults: women about 2 liters/day (~8 cups of 250ml), men about 2.5–3 liters/day.",
-        "Children 4–8 years old: about 1.2 liters/day; teens 9–18: about 1.6–1.9 liters/day.",
-        "Spread it out — 150–250ml per serving, roughly every 1-2 hours. Don't wait until you're thirsty.",
-        "Drink more during intense exercise or hot weather. General reference only, individual needs vary."
+      "sections": [
+        {
+          "heading": "Daily recommended intake",
+          "items": [
+            "National Academies of Sciences (NASEM): adult women average ~2.7 liters/day total water (including food), men ~3.7 liters/day — roughly 8-13 cups of 250ml as direct drinking water depending on the person.",
+            "Children 4–8 years old: about 1.2 liters/day; teens 9–18: about 1.6–1.9 liters/day."
+          ]
+        },
+        {
+          "heading": "How to drink it right",
+          "items": [
+            "Spread it out — 150–250ml per serving, roughly every 1-2 hours. Don't wait until you're thirsty.",
+            "Drink more during intense exercise, hot weather, or when sick with fever/diarrhea."
+          ]
+        },
+        {
+          "heading": "Signs you're dehydrated",
+          "items": [
+            "Thirst, dry mouth, dark and reduced urine output.",
+            "Fatigue, headache, dizziness, trouble concentrating.",
+            "Muscle cramps from electrolyte imbalance."
+          ]
+        }
+      ],
+      "sources": [
+        { "label": "National Academies of Sciences — Dietary Reference Intakes for Water", "url": "https://www.nationalacademies.org/news/2004/02/report-sets-dietary-intake-levels-for-water-salt-and-potassium-to-maintain-health-and-reduce-chronic-disease-risk" },
+        { "label": "Harvard T.H. Chan School of Public Health — The Nutrition Source: Water", "url": "https://nutritionsource.hsph.harvard.edu/water/" }
       ]
     },
     "advisor": {
@@ -175,11 +242,36 @@
     "advisorBtn": "AI sleep advice",
     "info": {
       "title": "How much sleep is enough?",
-      "body": [
-        "Adults (18-64): 7-9 hours/night. Older adults (65+): 7-8 hours. Teens: 8-10 hours.",
-        "Try to go to bed and wake up at consistent times every day, weekends included.",
-        "Avoid phone/computer screens for at least 30-60 minutes before bed.",
-        "Keep your bedroom dark, quiet and cool (around 25-27°C / 77-80°F) to fall asleep more easily."
+      "sections": [
+        {
+          "heading": "Recommended hours by age",
+          "items": [
+            "Adults (18-64): 7-9 hours/night.",
+            "Older adults (65+): 7-8 hours/night.",
+            "Teens (14-17): 8-10 hours/night.",
+            "School-age children (6-13): 9-11 hours/night."
+          ]
+        },
+        {
+          "heading": "Good sleep hygiene",
+          "items": [
+            "Go to bed and wake up at consistent times every day, weekends included.",
+            "Keep your bedroom dark, quiet and cool to fall asleep more easily.",
+            "Avoid phone/computer screens for at least 30-60 minutes before bed.",
+            "Limit caffeine, alcohol, and large amounts of fluid close to bedtime.",
+            "If you nap, keep it to 15-30 minutes so it doesn't disrupt nighttime sleep."
+          ]
+        },
+        {
+          "heading": "Consequences of chronic sleep debt",
+          "items": [
+            "Reduced focus and memory, higher risk of cardiovascular disease, obesity, and mood disorders."
+          ]
+        }
+      ],
+      "sources": [
+        { "label": "National Sleep Foundation — Sleep Duration Recommendations", "url": "https://www.thensf.org/how-many-hours-of-sleep-do-you-really-need/" },
+        { "label": "CDC — Sleep and Sleep Disorders", "url": "https://www.cdc.gov/sleep/about/index.html" }
       ]
     },
     "advisor": {
@@ -222,5 +314,9 @@
     "limitReached": "You've used all your AI suggestions for today, come back tomorrow.",
     "errorGeneric": "Unable to get a suggestion right now. Please try again later.",
     "disclaimer": "This suggestion is AI-generated, for reference only, and not a substitute for professional advice."
+  },
+  "infoCommon": {
+    "sourcesLabel": "Sources",
+    "disclaimer": "General reference information, compiled from the credible sources below — not a substitute for personal medical/nutrition advice from a doctor or specialist."
   }
 }

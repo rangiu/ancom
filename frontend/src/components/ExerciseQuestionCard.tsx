@@ -6,7 +6,7 @@ import { submitExerciseChoice } from '../lib/api';
 import { saveExerciseVoteState } from '../lib/storage';
 import { ExerciseStatsDisplay } from './ExerciseStatsDisplay';
 import { ShareButton } from './ShareButton';
-import { InfoModal } from './InfoModal';
+import { InfoModal, InfoSection, InfoSource } from './InfoModal';
 import { AiAdvisorModal } from './AiAdvisorModal';
 import { Loader2, Flame, Info, Sparkles } from 'lucide-react';
 
@@ -152,7 +152,8 @@ export const ExerciseQuestionCard: React.FC<ExerciseQuestionCardProps> = ({
         onClose={() => setInfoOpen(false)}
         icon={<Info className="w-5 h-5 text-apple-accent" />}
         title={t('exercise.info.title')}
-        body={t('exercise.info.body', { returnObjects: true }) as string[]}
+        sections={t('exercise.info.sections', { returnObjects: true }) as InfoSection[]}
+        sources={t('exercise.info.sources', { returnObjects: true }) as InfoSource[]}
       />
       <AiAdvisorModal
         isOpen={advisorOpen}

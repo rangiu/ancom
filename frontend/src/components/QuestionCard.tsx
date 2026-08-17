@@ -6,7 +6,7 @@ import { submitVoteChoice } from '../lib/api';
 import { saveVoteState } from '../lib/storage';
 import { StatsDisplay } from './StatsDisplay';
 import { ShareButton } from './ShareButton';
-import { InfoModal } from './InfoModal';
+import { InfoModal, InfoSection, InfoSource } from './InfoModal';
 import { AiAdvisorModal } from './AiAdvisorModal';
 import { Loader2, Sparkles, Info, ChefHat } from 'lucide-react';
 
@@ -157,7 +157,8 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
         onClose={() => setInfoOpen(false)}
         icon={<Info className="w-5 h-5 text-apple-accent" />}
         title={t('questionCard.info.title')}
-        body={t('questionCard.info.body', { returnObjects: true }) as string[]}
+        sections={t('questionCard.info.sections', { returnObjects: true }) as InfoSection[]}
+        sources={t('questionCard.info.sources', { returnObjects: true }) as InfoSource[]}
       />
       <AiAdvisorModal
         isOpen={advisorOpen}

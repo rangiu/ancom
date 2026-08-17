@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Loader2, Users, CheckCircle2, XCircle, Activity, Info } from 'lucide-react';
 import { CheckinChoice, CheckinStats, AdviceType } from '../types';
 import { ShareButton } from './ShareButton';
-import { InfoModal } from './InfoModal';
+import { InfoModal, InfoSection, InfoSource } from './InfoModal';
 import { AiAdvisorModal, AdvisorField } from './AiAdvisorModal';
 
 /** Visual identity for one check-in question — keeps every question looking
@@ -296,7 +296,8 @@ export const CheckinCard: React.FC<CheckinCardProps> = ({
         onClose={() => setInfoOpen(false)}
         icon={theme.badgeIcon}
         title={tt('info.title')}
-        body={t(`${i18nPrefix}.info.body`, { returnObjects: true }) as string[]}
+        sections={t(`${i18nPrefix}.info.sections`, { returnObjects: true }) as InfoSection[]}
+        sources={t(`${i18nPrefix}.info.sources`, { returnObjects: true }) as InfoSource[]}
       />
       <AiAdvisorModal
         isOpen={advisorOpen}

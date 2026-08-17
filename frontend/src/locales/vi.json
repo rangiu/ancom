@@ -20,11 +20,34 @@
     "infoBtn": "Thông tin dinh dưỡng",
     "info": {
       "title": "Ăn như thế nào là đủ chất?",
-      "body": [
-        "Người trưởng thành cần trung bình 1.800–2.400 kcal/ngày tuỳ giới tính, độ tuổi và mức vận động (nữ khoảng 1.800–2.200 kcal, nam khoảng 2.200–2.800 kcal).",
-        "Một bữa ăn cân đối nên có đủ 4 nhóm: tinh bột (cơm/bún/khoai), đạm (thịt/cá/trứng/đậu), rau xanh và chất béo lành mạnh.",
-        "Nên ăn đủ 3 bữa chính đúng giờ, hạn chế bỏ bữa sáng và ăn quá khuya.",
-        "Đây là thông tin tham khảo chung, không thay thế tư vấn dinh dưỡng cá nhân từ bác sĩ/chuyên gia."
+      "sections": [
+        {
+          "heading": "Nhu cầu năng lượng mỗi ngày",
+          "items": [
+            "Nhu cầu năng lượng = Chuyển hoá cơ bản (BMR) × hệ số vận động: ít vận động ×1.2, vận động nhẹ (1-3 buổi/tuần) ×1.375, vừa (3-5 buổi/tuần) ×1.55, nhiều (6-7 buổi/tuần) ×1.725.",
+            "Ước tính chung cho người trưởng thành: nữ khoảng 1.800–2.200 kcal/ngày, nam khoảng 2.200–2.800 kcal/ngày, tuỳ mức vận động thực tế."
+          ]
+        },
+        {
+          "heading": "4 nhóm chất cần có trong bữa ăn",
+          "items": [
+            "Tinh bột: cơm, bún, phở, khoai, ngũ cốc nguyên hạt.",
+            "Đạm: thịt, cá, trứng, đậu, sữa và chế phẩm từ sữa.",
+            "Rau củ quả: cung cấp vitamin, khoáng chất và chất xơ.",
+            "Chất béo lành mạnh: dầu thực vật, cá béo (cá hồi, cá thu), các loại hạt."
+          ]
+        },
+        {
+          "heading": "Thời điểm ăn hợp lý",
+          "items": [
+            "Ăn đủ 3 bữa chính đúng giờ, không bỏ bữa sáng.",
+            "Bữa tối nên cách giờ ngủ ít nhất 2-3 giờ để hệ tiêu hoá kịp nghỉ ngơi."
+          ]
+        }
+      ],
+      "sources": [
+        { "label": "Viện Dinh Dưỡng Quốc Gia — Nhu cầu dinh dưỡng khuyến nghị cho người Việt Nam", "url": "https://viendinhduongtphcm.org/vi/dinh-duong-co-ban/nhu-cau-dinh-duong-khuyen-nghi.html" },
+        { "label": "WHO — Healthy Diet Fact Sheet", "url": "https://www.who.int/news-room/fact-sheets/detail/healthy-diet" }
       ]
     }
   },
@@ -49,11 +72,33 @@
     "advisorBtn": "AI gợi ý lịch tập",
     "info": {
       "title": "Nên tập thể dục lúc nào?",
-      "body": [
-        "WHO khuyến nghị người trưởng thành nên vận động tối thiểu 150 phút/tuần cường độ vừa (hoặc 75 phút cường độ cao).",
-        "Buổi sáng sớm (sau khi thức dậy 1-2 giờ) giúp tỉnh táo cả ngày; buổi chiều tối (16h-19h) là lúc cơ thể có nhiệt độ và sức mạnh cơ bắp cao nhất, phù hợp tập nặng.",
-        "Tránh tập sát giờ ngủ (trong vòng 1-2 giờ trước khi ngủ) vì có thể gây khó ngủ.",
-        "Nên có ít nhất 1-2 ngày nghỉ/tuần để cơ thể phục hồi."
+      "sections": [
+        {
+          "heading": "Khuyến nghị vận động (WHO 2020)",
+          "items": [
+            "Người trưởng thành: 150–300 phút/tuần cường độ vừa, hoặc 75–150 phút cường độ cao, hoặc kết hợp tương đương.",
+            "Kèm bài tập kháng lực (tạ, chống đẩy, squat...) cho tất cả nhóm cơ chính, ít nhất 2 buổi/tuần.",
+            "Vận động nhiều hơn mức tối thiểu (tới 300-750 phút/tuần cường độ vừa) mang lại thêm lợi ích sức khoẻ."
+          ]
+        },
+        {
+          "heading": "Thời điểm tập phù hợp",
+          "items": [
+            "Sáng sớm (1-2 giờ sau khi thức dậy): giúp tỉnh táo, tập trung cả ngày.",
+            "Chiều tối (16h-19h): nhiệt độ cơ thể và sức mạnh cơ bắp cao nhất, phù hợp tập nặng/nâng tạ.",
+            "Tránh tập cường độ cao sát giờ ngủ (trong vòng 1-2 giờ) vì có thể gây khó ngủ."
+          ]
+        },
+        {
+          "heading": "Phục hồi",
+          "items": [
+            "Nên có ít nhất 1-2 ngày nghỉ/tuần để cơ và khớp phục hồi, giảm nguy cơ chấn thương do tập quá sức."
+          ]
+        }
+      ],
+      "sources": [
+        { "label": "WHO — Guidelines on Physical Activity and Sedentary Behaviour (2020)", "url": "https://www.who.int/publications/i/item/9789240015128" },
+        { "label": "CDC — Physical Activity Basics for Adults", "url": "https://www.cdc.gov/physical-activity-basics/guidelines/adults.html" }
       ]
     },
     "advisor": {
@@ -135,11 +180,33 @@
     "advisorBtn": "AI tư vấn lượng nước",
     "info": {
       "title": "Uống bao nhiêu nước là đủ?",
-      "body": [
-        "Người trưởng thành: nữ khoảng 2 lít/ngày (~8 cốc 250ml), nam khoảng 2,5–3 lít/ngày.",
-        "Trẻ em 4–8 tuổi: khoảng 1,2 lít/ngày; thanh thiếu niên 9–18 tuổi: khoảng 1,6–1,9 lít/ngày.",
-        "Nên uống rải đều, mỗi lần 150–250ml, cách nhau khoảng 1–2 giờ — đừng đợi khát mới uống.",
-        "Uống nhiều hơn khi vận động mạnh hoặc trời nóng. Thông tin tham khảo chung, tuỳ thể trạng mỗi người có thể khác."
+      "sections": [
+        {
+          "heading": "Lượng nước khuyến nghị mỗi ngày",
+          "items": [
+            "Viện Hàn lâm Khoa học Hoa Kỳ (NASEM): nữ trưởng thành ~2,7 lít/ngày tổng lượng nước (kể cả từ thực phẩm), nam ~3,7 lít/ngày — tương đương khoảng 8-13 cốc 250ml uống trực tiếp tuỳ người.",
+            "Trẻ em 4–8 tuổi: khoảng 1,2 lít/ngày; thanh thiếu niên 9–18 tuổi: khoảng 1,6–1,9 lít/ngày."
+          ]
+        },
+        {
+          "heading": "Uống như thế nào cho đúng",
+          "items": [
+            "Rải đều 150–250ml/lần, cách nhau khoảng 1–2 giờ — đừng đợi khát mới uống.",
+            "Uống nhiều hơn khi vận động mạnh, trời nóng, hoặc khi sốt/tiêu chảy."
+          ]
+        },
+        {
+          "heading": "Dấu hiệu cơ thể đang thiếu nước",
+          "items": [
+            "Khát, miệng khô, nước tiểu sậm màu và ít đi.",
+            "Mệt mỏi, đau đầu, chóng mặt, khó tập trung.",
+            "Chuột rút cơ do mất cân bằng điện giải."
+          ]
+        }
+      ],
+      "sources": [
+        { "label": "National Academies of Sciences — Dietary Reference Intakes for Water", "url": "https://www.nationalacademies.org/news/2004/02/report-sets-dietary-intake-levels-for-water-salt-and-potassium-to-maintain-health-and-reduce-chronic-disease-risk" },
+        { "label": "Harvard T.H. Chan School of Public Health — The Nutrition Source: Water", "url": "https://nutritionsource.hsph.harvard.edu/water/" }
       ]
     },
     "advisor": {
@@ -175,11 +242,36 @@
     "advisorBtn": "AI tư vấn giấc ngủ",
     "info": {
       "title": "Ngủ bao nhiêu là đủ giấc?",
-      "body": [
-        "Người trưởng thành (18-64 tuổi): 7-9 giờ/đêm. Người lớn tuổi (65+): 7-8 giờ. Thanh thiếu niên: 8-10 giờ.",
-        "Nên đi ngủ và thức dậy vào giờ cố định mỗi ngày, kể cả cuối tuần.",
-        "Tránh dùng điện thoại/máy tính ít nhất 30-60 phút trước khi ngủ.",
-        "Phòng ngủ nên tối, yên tĩnh và mát mẻ (khoảng 25-27°C) để dễ vào giấc hơn."
+      "sections": [
+        {
+          "heading": "Số giờ ngủ khuyến nghị theo độ tuổi",
+          "items": [
+            "Người trưởng thành (18-64 tuổi): 7-9 giờ/đêm.",
+            "Người lớn tuổi (65+): 7-8 giờ/đêm.",
+            "Thanh thiếu niên (14-17 tuổi): 8-10 giờ/đêm.",
+            "Trẻ em (6-13 tuổi): 9-11 giờ/đêm."
+          ]
+        },
+        {
+          "heading": "Vệ sinh giấc ngủ tốt",
+          "items": [
+            "Đi ngủ và thức dậy vào giờ cố định mỗi ngày, kể cả cuối tuần.",
+            "Phòng ngủ nên tối, yên tĩnh và mát mẻ để dễ vào giấc hơn.",
+            "Tránh màn hình điện thoại/máy tính ít nhất 30-60 phút trước khi ngủ.",
+            "Hạn chế caffeine, rượu bia và uống nhiều nước gần giờ ngủ.",
+            "Nếu ngủ trưa, chỉ nên 15-30 phút để không ảnh hưởng giấc ngủ đêm."
+          ]
+        },
+        {
+          "heading": "Hệ quả khi thiếu ngủ kéo dài",
+          "items": [
+            "Giảm khả năng tập trung và trí nhớ, tăng nguy cơ tim mạch, béo phì và rối loạn tâm trạng."
+          ]
+        }
+      ],
+      "sources": [
+        { "label": "National Sleep Foundation — Sleep Duration Recommendations", "url": "https://www.thensf.org/how-many-hours-of-sleep-do-you-really-need/" },
+        { "label": "CDC — Sleep and Sleep Disorders", "url": "https://www.cdc.gov/sleep/about/index.html" }
       ]
     },
     "advisor": {
@@ -222,5 +314,9 @@
     "limitReached": "Bạn đã dùng hết lượt tư vấn AI hôm nay, quay lại vào ngày mai nhé.",
     "errorGeneric": "Không thể lấy gợi ý lúc này. Vui lòng thử lại sau.",
     "disclaimer": "Gợi ý được tạo bởi AI, chỉ mang tính tham khảo, không thay thế tư vấn chuyên môn."
+  },
+  "infoCommon": {
+    "sourcesLabel": "Nguồn tham khảo",
+    "disclaimer": "Thông tin tham khảo chung, tổng hợp từ các nguồn uy tín bên dưới — không thay thế tư vấn y tế/dinh dưỡng cá nhân từ bác sĩ hoặc chuyên gia."
   }
 }
