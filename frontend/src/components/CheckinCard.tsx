@@ -192,6 +192,14 @@ export const CheckinCard: React.FC<CheckinCardProps> = ({
               </div>
             )}
 
+            {Boolean(stats.streak) && (
+              <div className="mb-6 flex items-center justify-center">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20 text-xs font-bold">
+                  🔥 {t('streak.label', { count: stats.streak })}
+                </span>
+              </div>
+            )}
+
             <div className="mb-8 p-5 rounded-2xl bg-white/60 dark:bg-zinc-900/60 border border-black/5 dark:border-white/10 shadow-inner">
               <div className="flex justify-between items-baseline mb-2">
                 <span className="text-3xl font-extrabold text-apple-text dark:text-apple-darkText tracking-tight">

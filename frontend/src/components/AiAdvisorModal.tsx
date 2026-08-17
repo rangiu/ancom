@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Loader2, Sparkles } from 'lucide-react';
@@ -54,6 +54,8 @@ export const AiAdvisorModal: React.FC<AiAdvisorModalProps> = ({
   const lang = i18n.language?.startsWith('vi') ? 'vi' : 'en';
 
   const [values, setValues] = useState<Record<string, string>>({});
+  const [submittedFields, setSubmittedFields] = useState<Record<string, string> | null>(null);
+  const [resultLang, setResultLang] = useState<'vi' | 'en' | null>(null);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [result, setResult] = useState<string | null>(null);
@@ -65,20 +67,14 @@ export const AiAdvisorModal: React.FC<AiAdvisorModalProps> = ({
     onClose();
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (loading) return;
-
+  const runQuery = async (targetLang: 'vi' | 'en', payload: Record<string, string>) => {
     setLoading(true);
     setErrorMessage(null);
-    setResult(null);
 
     try {
-      const payload: Record<string, string> = {};
-      for (const f of fields) payload[f.key] = (values[f.key] || '').trim();
-
-      const data = await getAiAdvice(adviceType, payload, lang);
+      const data = await getAiAdvice(adviceType, payload, targetLang);
       setResult(data.suggestion);
+      setResultLang(targetLang);
       setRemainingToday(data.remainingToday);
     } catch (err: any) {
       console.error(`AI advice (${adviceType}) error:`, err);
@@ -87,6 +83,30 @@ export const AiAdvisorModal: React.FC<AiAdvisorModalProps> = ({
       setLoading(false);
     }
   };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (loading) return;
+
+    const payload: Record<string, string> = {};
+    for (const f of fields) payload[f.key] = (values[f.key] || '').trim();
+
+    setSubmittedFields(payload);
+    setResult(null);
+    runQuery(lang, payload);
+  };
+
+  // Auto re-translate the suggestion currently on screen when the site
+  // language changes, so toggling VI/EN never leaves a stale-language AI
+  // answer visible. Re-submits the exact same inputs the user already gave
+  // — this does use one more AI call against the same daily quota, same as
+  // any other advice request.
+  useEffect(() => {
+    if (result && resultLang && resultLang !== lang && !loading && submittedFields) {
+      runQuery(lang, submittedFields);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lang]);
 
   return (
     <AnimatePresence>

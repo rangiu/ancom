@@ -318,5 +318,10 @@
   "infoCommon": {
     "sourcesLabel": "Sources",
     "disclaimer": "General reference information, compiled from the credible sources below — not a substitute for personal medical/nutrition advice from a doctor or specialist."
+  },
+  "streak": {
+    "label_one": "{{count}} day in a row",
+    "label_other": "{{count}} days in a row",
+    "broken": "Answer \"yes\" every day in a row to start a streak 🔥"
   }
 }

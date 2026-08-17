@@ -5,6 +5,8 @@ export interface VoteStats {
   notAteCount: number;
   totalVotes: number;
   percentageAte: number;
+  /** Consecutive days this device answered "yes" — 0 if broken/never started. */
+  streak?: number;
   lastUpdated?: string;
 }
 
@@ -30,6 +32,8 @@ export interface ExerciseStats {
   notDidCount: number;
   totalVotes: number;
   percentageDid: number;
+  /** Consecutive days this device answered "yes" — 0 if broken/never started. */
+  streak?: number;
   lastUpdated?: string;
 }
 
@@ -50,6 +54,8 @@ export interface CheckinStats {
   noCount: number;
   totalVotes: number;
   percentageYes: number;
+  /** Consecutive days this device answered "yes" — 0 if broken/never started. */
+  streak?: number;
   lastUpdated?: string;
 }
 

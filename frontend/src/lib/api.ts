@@ -26,7 +26,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://ancom-api.sum
 
 export const fetchVoteStats = async (): Promise<VoteStats> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/stats`, {
+    const response = await fetch(`${API_BASE_URL}/stats?deviceToken=${encodeURIComponent(getDeviceToken())}`, {
       method: 'GET',
       headers: { Accept: 'application/json' },
     });
@@ -71,10 +71,10 @@ export const submitVoteChoice = async (choice: VoteChoice): Promise<VoteStats> =
 
 export const fetchExerciseStats = async (): Promise<ExerciseStats> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/exercise/stats`, {
-      method: 'GET',
-      headers: { Accept: 'application/json' },
-    });
+    const response = await fetch(
+      `${API_BASE_URL}/exercise/stats?deviceToken=${encodeURIComponent(getDeviceToken())}`,
+      { method: 'GET', headers: { Accept: 'application/json' } }
+    );
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -117,10 +117,10 @@ export const submitExerciseChoice = async (choice: ExerciseChoice): Promise<Exer
 const createCheckinApi = (routeSegment: string, storage: typeof waterStorage) => {
   const fetchStats = async (): Promise<CheckinStats> => {
     try {
-      const response = await fetch(`${API_BASE_URL}/${routeSegment}/stats`, {
-        method: 'GET',
-        headers: { Accept: 'application/json' },
-      });
+      const response = await fetch(
+        `${API_BASE_URL}/${routeSegment}/stats?deviceToken=${encodeURIComponent(getDeviceToken())}`,
+        { method: 'GET', headers: { Accept: 'application/json' } }
+      );
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
       const data: ApiResponse<CheckinStats> = await response.json();

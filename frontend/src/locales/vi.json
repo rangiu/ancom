@@ -318,5 +318,9 @@
   "infoCommon": {
     "sourcesLabel": "Nguồn tham khảo",
     "disclaimer": "Thông tin tham khảo chung, tổng hợp từ các nguồn uy tín bên dưới — không thay thế tư vấn y tế/dinh dưỡng cá nhân từ bác sĩ hoặc chuyên gia."
+  },
+  "streak": {
+    "label": "{{count}} ngày liên tiếp",
+    "broken": "Trả lời \"Đủ/Đã\" liên tiếp mỗi ngày để bắt đầu chuỗi 🔥"
   }
 }

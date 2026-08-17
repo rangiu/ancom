@@ -31,6 +31,16 @@ function todayVN() {
   }).format(new Date());
 }
 
+// Yesterday's VN-local calendar date, as plain Y-M-D arithmetic (todayVN()
+// already resolved the timezone; this just steps the calendar date back by
+// one day, no further timezone math needed).
+function yesterdayVN() {
+  const [y, m, d] = todayVN().split('-').map(Number);
+  const dt = new Date(Date.UTC(y, m - 1, d));
+  dt.setUTCDate(dt.getUTCDate() - 1);
+  return dt.toISOString().slice(0, 10);
+}
+
 // ---- Generic daily yes/no check-in system ----
 // Every check-in ("Have you eaten rice today?", "...exercised?", "...drunk
 // enough water?", "...slept enough?") shares the exact same shape: a yes
@@ -81,11 +91,12 @@ const CHECKINS = [
 ];
 
 function freshState() {
-  const s = { day: todayVN(), aiCounts: {}, aiGlobalCount: 0 };
+  const s = { day: todayVN(), aiCounts: {}, aiGlobalCount: 0, streaks: {} };
   for (const c of CHECKINS) {
     s[c.yesField] = 0;
     s[c.noField] = 0;
     s[c.tokensField] = [];
+    s.streaks[c.id] = {};
   }
   return s;
 }
@@ -114,6 +125,12 @@ function loadState() {
     delete parsed.recipeCounts;
     delete parsed.recipeGlobalCount;
 
+    // Backfill streaks for state files written before this feature existed.
+    if (typeof parsed.streaks !== 'object' || parsed.streaks === null) parsed.streaks = {};
+    for (const c of CHECKINS) {
+      if (typeof parsed.streaks[c.id] !== 'object' || parsed.streaks[c.id] === null) parsed.streaks[c.id] = {};
+    }
+
     return parsed;
   } catch (err) {
     // First run (no file yet) or corrupt/pre-checkin-system file — start fresh.
@@ -137,7 +154,13 @@ let state = loadState();
 function ensureDailyReset() {
   const today = todayVN();
   if (state.day !== today) {
+    // Streaks (per-device, per-checkin "last voted day" + running count)
+    // must survive this reset — they span many days by design. Everything
+    // else here (yes/no counts, today's voted-token lists, AI quotas) is
+    // genuinely daily and gets wiped.
+    const preservedStreaks = state.streaks;
     state = freshState();
+    if (preservedStreaks) state.streaks = preservedStreaks;
     saveState(state);
     console.log(`[reset] Daily counters reset for ${today} (Asia/Ho_Chi_Minh)`);
   }
@@ -146,7 +169,30 @@ function ensureDailyReset() {
 cron.schedule('0 0 * * *', ensureDailyReset, { timezone: 'Asia/Ho_Chi_Minh' });
 setInterval(ensureDailyReset, 60 * 1000);
 
-function computeCheckinStats(c) {
+// Current streak for one device on one check-in, as of right now — not just
+// whatever was last stored. A streak recorded 5 days ago with no vote since
+// is dead (0), even though its `count` field still remembers "5"; a streak
+// last touched yesterday is still alive (they have until VN midnight today
+// to extend it before it dies).
+function getEffectiveStreak(checkinId, deviceToken) {
+  if (!deviceToken) return 0;
+  const rec = state.streaks[checkinId]?.[deviceToken];
+  if (!rec) return 0;
+  if (rec.lastDay === todayVN() || rec.lastDay === yesterdayVN()) return rec.count;
+  return 0;
+}
+
+// Called once per successful vote. Extends the streak if the device's last
+// vote on this check-in was yesterday, starts a new streak (1) otherwise.
+function bumpStreak(checkinId, deviceToken) {
+  const today = todayVN();
+  const rec = state.streaks[checkinId][deviceToken];
+  const count = rec && rec.lastDay === yesterdayVN() ? rec.count + 1 : 1;
+  state.streaks[checkinId][deviceToken] = { lastDay: today, count };
+  return count;
+}
+
+function computeCheckinStats(c, deviceToken) {
   const yes = state[c.yesField];
   const no = state[c.noField];
   const totalVotes = yes + no;
@@ -156,6 +202,7 @@ function computeCheckinStats(c) {
     [c.statsShape.no]: no,
     totalVotes,
     [c.statsShape.percent]: percent,
+    streak: getEffectiveStreak(c.id, deviceToken),
     lastUpdated: new Date().toISOString(),
   };
 }
@@ -183,9 +230,10 @@ const voteLimiter = rateLimit({
 });
 
 for (const c of CHECKINS) {
-  app.get(`${c.routeBase}/stats`, (_req, res) => {
+  app.get(`${c.routeBase}/stats`, (req, res) => {
     ensureDailyReset();
-    res.json({ success: true, data: computeCheckinStats(c) });
+    const deviceToken = typeof req.query.deviceToken === 'string' ? req.query.deviceToken : undefined;
+    res.json({ success: true, data: computeCheckinStats(c, deviceToken) });
   });
 
   app.post(`${c.routeBase}/vote`, voteLimiter, (req, res) => {
@@ -209,9 +257,17 @@ for (const c of CHECKINS) {
     } else {
       state[c.noField] += 1;
     }
+    // Streak = consecutive days answering "yes" (ate/exercised/hydrated/
+    // slept enough) — an honest "no" breaks it immediately rather than
+    // leaving yesterday's count to quietly expire tomorrow.
+    if (choice === c.yesChoice) {
+      bumpStreak(c.id, deviceToken);
+    } else {
+      delete state.streaks[c.id][deviceToken];
+    }
     saveState(state);
 
-    res.json({ success: true, message: 'Vote recorded successfully', data: computeCheckinStats(c) });
+    res.json({ success: true, message: 'Vote recorded successfully', data: computeCheckinStats(c, deviceToken) });
   });
 }
 
